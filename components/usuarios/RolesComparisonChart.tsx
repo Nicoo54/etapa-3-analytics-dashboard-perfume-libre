@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-  compradores: { label: "Compradores", color: "var(--primary)" },
-  vendedores: { label: "Vendedores", color: "var(--muted-foreground)" },
+  compradores: { label: "Compradores", color: "var(--chart-2)" },
+  vendedores: { label: "Vendedores", color: "var(--chart-1)" },
 };
 
 export function RolesComparisonChart({ data }: { data: any[] }) {
@@ -43,16 +43,19 @@ export function RolesComparisonChart({ data }: { data: any[] }) {
                 tickLine={false}
                 axisLine={false}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip
+                cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
+                content={<ChartTooltipContent />}
+              />
               <Legend verticalAlign="top" height={36} />
               <Bar
                 dataKey="compradores"
-                fill="var(--primary)"
+                fill="var(--chart-2)"
                 radius={[4, 4, 0, 0]}
               />
               <Bar
                 dataKey="vendedores"
-                fill="var(--muted-foreground)"
+                fill="var(--chart-1)"
                 radius={[4, 4, 0, 0]}
               />
             </BarChart>
