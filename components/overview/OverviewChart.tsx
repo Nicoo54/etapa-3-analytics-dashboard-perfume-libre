@@ -43,7 +43,10 @@ export function OverviewChart({ data }: OverviewChartProps) {
                 axisLine={false}
                 tickFormatter={(value) => `$${value}`}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip
+                cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
+                content={<ChartTooltipContent />}
+              />
               <Bar
                 dataKey="revenue"
                 fill="var(--color-revenue)"

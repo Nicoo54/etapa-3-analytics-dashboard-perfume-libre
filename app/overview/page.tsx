@@ -17,14 +17,9 @@ export default async function OverviewPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+        <h1 className="text-2xl font-bold text-foreground mb-1">
           Resumen General
         </h1>
-        <p className="text-gray-500 text-sm">
-          {process.env.USE_REAL_API === "true"
-            ? "⚠️ Mostrando datos de prueba (Mocks activados)"
-            : "🟢 Mostrando datos en tiempo real"}
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
