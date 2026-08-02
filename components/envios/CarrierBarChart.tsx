@@ -31,7 +31,10 @@ export function CarrierBarChart({ data }: { data: any[] }) {
                 tickLine={false}
                 axisLine={false}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip
+                cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
+                content={<ChartTooltipContent />}
+              />
               <Bar
                 dataKey="envios"
                 fill="var(--primary)"
