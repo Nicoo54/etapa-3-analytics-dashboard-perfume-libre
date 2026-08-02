@@ -1,4 +1,3 @@
-// app/usuarios/page.tsx
 import {
   getUsuariosKPIs,
   getCrecimientoUsuariosData,
