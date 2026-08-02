@@ -35,10 +35,13 @@ export function OrdersByDayChart({ data }: { data: any[] }) {
                 tickLine={false}
                 axisLine={false}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip
+                cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
+                content={<ChartTooltipContent />}
+              />
               <Bar
                 dataKey="ordenes"
-                fill="var(--color-ordenes)"
+                fill="var(--primary)"
                 radius={[4, 4, 0, 0]}
               />
             </BarChart>
