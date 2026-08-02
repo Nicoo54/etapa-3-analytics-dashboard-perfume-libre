@@ -24,8 +24,8 @@ export function Sidebar() {
             href={item.href}
             className={`block px-4 py-2 rounded-md ${
               isActive
-                ? "bg-indigo-50 text-indigo-700 font-medium"
-                : "text-gray-600 hover:bg-gray-100"
+                ? "bg-indigo-50 text-primary"
+                : "text-muted-foreground hover:bg-muted"
             }`}
           >
             {item.label}
