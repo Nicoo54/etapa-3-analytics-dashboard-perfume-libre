@@ -17,6 +17,7 @@ import {
   ChevronsLeft,
 } from "lucide-react";
 import { useState } from "react";
+import { useTheme } from "next-themes";
 
 const navItems = [
   { href: "/overview", label: "Overview", icon: LayoutDashboard },
@@ -30,6 +31,7 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   return (
     <>
@@ -117,7 +119,10 @@ export function Sidebar() {
         {/* Footer del Sidebar */}
         <div className="border-t border-border p-4 space-y-2 min-w-[256px]">
           <button
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              setTheme(theme === "dark" ? "light" : "dark");
+            }}
             className={`w-full flex items-center rounded-lg whitespace-nowrap text-muted-foreground transition-colors ${
               expanded ? "hover:bg-muted hover:text-foreground" : ""
             }`}
