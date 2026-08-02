@@ -19,17 +19,10 @@ export default function RootLayout({
   return (
     <html lang="es" className={cn("font-sans", inter.variable)}>
       <body className="bg-background text-foreground font-sans antialiased flex h-screen overflow-hidden">
-        <aside className="w-64 bg-sidebar border-r border-border flex flex-col">
-          <div className="h-16 flex items-center px-6 border-b border-border">
-            <h1 className="text-xl font-bold text-primary">Analytics</h1>
-          </div>
-          <nav className="flex-1 px-4 py-6 space-y-2">
-            <Sidebar />
-          </nav>
-        </aside>
+        <Sidebar />
 
         <div className="flex-1 flex flex-col h-screen overflow-hidden">
-          <header className="h-16 bg-background border-b border-border flex items-center justify-between px-8">
+          <header className="h-16 bg-background border-b border-border flex items-center justify-between px-8 transition-all">
             <h2 className="text-lg font-semibold text-foreground">
               Panel de Control
             </h2>
@@ -40,7 +33,7 @@ export default function RootLayout({
                 <option>Este mes</option>
               </select>
 
-              <button className="bg-primary text-foreground px-4 py-1.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
+              <button className="bg-primary text-primary-foreground px-4 py-1.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
                 Exportar
               </button>
             </div>
