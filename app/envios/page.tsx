@@ -12,11 +12,13 @@ import { ShippingVolumeChart } from "@/components/envios/ShippingVolumeChart";
 function MetricCard({
   title,
   value,
+  prefix = "",
   suffix = "",
 }: {
   title: string;
   value: string | number;
-  suffix?: string;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
 }) {
   return (
     <Card>
@@ -26,8 +28,9 @@ function MetricCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
-          {value}
+        <div className="text-2xl font-bold flex items-center gap-1.5">
+          {prefix}
+          <span>{value}</span>
           {suffix}
         </div>
       </CardContent>
@@ -46,10 +49,10 @@ export default async function EnviosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+        <h1 className="text-2xl font-bold text-foreground mb-1">
           Logística y Envíos
         </h1>
-        <p className="text-gray-500 text-sm">
+        <p className="text-muted-foreground text-sm">
           Monitoreo de despachos, tiempos de entrega y distribución de carga.
         </p>
       </div>
@@ -60,7 +63,11 @@ export default async function EnviosPage() {
         <MetricCard
           title="Tiempo Promedio de Entrega"
           value={kpis.tiempoPromedio}
-          suffix=" días"
+          suffix={
+            <span className="text-base font-normal text-muted-foreground">
+              días
+            </span>
+          }
         />
       </div>
 
@@ -69,7 +76,7 @@ export default async function EnviosPage() {
         <CarrierBarChart data={operadorData} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3">
+      <div className="mt-8">
         <ShippingVolumeChart data={volumenData} />
       </div>
     </div>
