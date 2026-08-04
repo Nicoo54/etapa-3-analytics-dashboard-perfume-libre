@@ -17,8 +17,8 @@ function MetricCard({
 }: {
   title: string;
   value: string | number;
-  prefix?: string;
-  suffix?: string;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
 }) {
   return (
     <Card>
@@ -28,9 +28,9 @@ function MetricCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold flex items-center gap-1.5">
           {prefix}
-          {value}
+          <span>{value}</span>
           {suffix}
         </div>
       </CardContent>
@@ -49,13 +49,12 @@ export default async function UsuariosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Usuarios</h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-2xl font-bold text-foreground mb-1">Usuarios</h1>
+        <p className="text-muted-foreground text-sm">
           Métricas de retención, roles y crecimiento en la plataforma.
         </p>
       </div>
 
-      {/* KPI Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MetricCard
           title="Total Usuarios Registrados"
@@ -72,13 +71,11 @@ export default async function UsuariosPage() {
         />
       </div>
 
-      {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
         <UserGrowthChart data={crecimientoData} />
         <RolesComparisonChart data={rolesData} />
       </div>
 
-      {/* Table Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3">
         <TopBuyersTable data={topCompradores} />
       </div>
