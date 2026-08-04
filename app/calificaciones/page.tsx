@@ -4,40 +4,11 @@ import {
   getEvolucionPromedio,
   getVendedoresEnRiesgo,
 } from "@/lib/api/calificacionesData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RatingDistributionChart } from "@/components/calificaciones/RatingDistributionChart";
 import { RatingEvolutionChart } from "@/components/calificaciones/RatingEvolutionChart";
 import { SellersAtRiskTable } from "@/components/calificaciones/SellersAtRiskTable";
 import { Star } from "lucide-react";
-
-function MetricCard({
-  title,
-  value,
-  prefix = "",
-  suffix = "",
-}: {
-  title: string;
-  value: string | number;
-  prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold flex items-center gap-1.5">
-          {prefix}
-          <span>{value}</span>
-          {suffix}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { MetricCard } from "@/components/MetricCard";
 
 export default async function CalificacionesPage() {
   const [kpis, distribucionData, evolucionData, riesgoData] = await Promise.all(

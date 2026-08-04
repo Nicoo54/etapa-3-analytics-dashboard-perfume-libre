@@ -1,42 +1,13 @@
+import { MetricCard } from "@/components/MetricCard";
 import { OrdersByDayChart } from "@/components/transacciones/OrdersByDayChart";
 import { RecentOrdersTable } from "@/components/transacciones/RecentOrdersTable";
 import { RevenueLineChart } from "@/components/transacciones/RevenueLineChart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   getOrdenesPorDiaData,
   getRevenueAcumuladoData,
   getTransaccionesKPIs,
   getUltimasOrdenes,
 } from "@/lib/api/transaccionesData";
-
-function MetricCard({
-  title,
-  value,
-  prefix = "",
-  suffix = "",
-}: {
-  title: string;
-  value: string | number;
-  prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold flex items-center gap-1.5">
-          {prefix}
-          <span>{value}</span>
-          {suffix}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 export default async function TransaccionesPage() {
   const [kpis, revenueData, ordenesDiaData, ultimasOrdenes] = await Promise.all(

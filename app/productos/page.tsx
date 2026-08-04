@@ -4,39 +4,10 @@ import {
   getDistribucionCategorias,
   getUltimosProductos,
 } from "@/lib/api/productosData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TopProductsChart } from "@/components/productos/TopProductsChart";
 import { CategoryDonutChart } from "@/components/productos/CategoryDonutChart";
 import { CatalogTable } from "@/components/productos/CatalogTable";
-
-function MetricCard({
-  title,
-  value,
-  prefix = "",
-  suffix = "",
-}: {
-  title: string;
-  value: string | number;
-  prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold flex items-center gap-1.5">
-          {prefix}
-          <span>{value}</span>
-          {suffix}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { MetricCard } from "@/components/MetricCard";
 
 export default async function ProductosPage() {
   const [kpis, topData, categoriaData, catalogoData] = await Promise.all([
