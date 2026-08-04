@@ -17,8 +17,8 @@ function MetricCard({
 }: {
   title: string;
   value: string | number;
-  prefix?: string;
-  suffix?: string;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
 }) {
   return (
     <Card>
@@ -28,9 +28,9 @@ function MetricCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold flex items-center gap-1.5">
           {prefix}
-          {value}
+          <span>{value}</span>
           {suffix}
         </div>
       </CardContent>
@@ -49,8 +49,8 @@ export default async function ProductosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Catálogo</h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-2xl font-bold text-foreground mb-1">Catálogo</h1>
+        <p className="text-muted-foreground text-sm">
           Estado de las publicaciones y rendimiento de productos C2C.
         </p>
       </div>
@@ -75,7 +75,7 @@ export default async function ProductosPage() {
         <CategoryDonutChart data={categoriaData} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3">
+      <div className="mt-8">
         <CatalogTable data={catalogoData} />
       </div>
     </div>
