@@ -7,16 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AlertTriangle, Star } from "lucide-react";
 
 export function SellersAtRiskTable({ data }: { data: any[] }) {
   return (
-    <Card className="col-span-3 mt-6 border-red-200">
-      <CardHeader className="bg-red-50/50 rounded-t-xl pb-4">
-        <CardTitle className="text-red-700">
-          ⚠️ Vendedores en Riesgo (Promedio &lt; 3.0)
+    <Card className="col-span-3 mt-6 border-destructive/20">
+      <CardHeader>
+        <CardTitle className="text-destructive flex items-center gap-2">
+          <AlertTriangle className="h-5 w-5" />
+          Vendedores en Riesgo (Promedio &lt; 3.0)
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-6">
+      <CardContent className="">
         <Table>
           <TableHeader>
             <TableRow>
@@ -30,7 +32,7 @@ export function SellersAtRiskTable({ data }: { data: any[] }) {
             {data.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={4}
                   className="text-center text-muted-foreground py-6"
                 >
                   No hay vendedores en riesgo actualmente.
@@ -42,14 +44,17 @@ export function SellersAtRiskTable({ data }: { data: any[] }) {
                   <TableCell className="text-muted-foreground font-medium">
                     {vendedor.id}
                   </TableCell>
-                  <TableCell className="font-semibold">
+                  <TableCell className="font-semibold text-foreground">
                     {vendedor.nombre}
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-center text-foreground">
                     {vendedor.resenas}
                   </TableCell>
-                  <TableCell className="text-center font-bold text-red-600">
-                    {vendedor.promedio.toFixed(1)} ⭐
+                  <TableCell className="font-bold text-destructive">
+                    <div className="flex items-center justify-center gap-1">
+                      <span>{vendedor.promedio.toFixed(1)}</span>
+                      <Star className="w-4 h-4 fill-destructive text-destructive" />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

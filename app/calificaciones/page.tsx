@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RatingDistributionChart } from "@/components/calificaciones/RatingDistributionChart";
 import { RatingEvolutionChart } from "@/components/calificaciones/RatingEvolutionChart";
 import { SellersAtRiskTable } from "@/components/calificaciones/SellersAtRiskTable";
+import { Star } from "lucide-react";
 
 function MetricCard({
   title,
@@ -17,8 +18,8 @@ function MetricCard({
 }: {
   title: string;
   value: string | number;
-  prefix?: string;
-  suffix?: string;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
 }) {
   return (
     <Card>
@@ -28,9 +29,9 @@ function MetricCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold flex items-center gap-1.5">
           {prefix}
-          {value}
+          <span>{value}</span>
           {suffix}
         </div>
       </CardContent>
@@ -51,10 +52,10 @@ export default async function CalificacionesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+        <h1 className="text-2xl font-bold text-foreground mb-1">
           Feedback y Calidad
         </h1>
-        <p className="text-gray-500 text-sm">
+        <p className="text-muted-foreground text-sm">
           Monitoreo de la satisfacción del usuario y reputación de vendedores.
         </p>
       </div>
@@ -63,7 +64,7 @@ export default async function CalificacionesPage() {
         <MetricCard
           title="Promedio Global"
           value={kpis.promedioGlobal.toFixed(1)}
-          suffix=" ⭐"
+          suffix={<Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />}
         />
         <MetricCard
           title="Total de Reseñas"
