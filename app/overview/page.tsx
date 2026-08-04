@@ -6,6 +6,7 @@ import {
   getOverviewMetricas,
   getRevenueData,
 } from "@/lib/api/overviewData";
+import { Star } from "lucide-react";
 
 export default async function OverviewPage() {
   const [metrics, revenueData, statusData] = await Promise.all([
@@ -41,7 +42,7 @@ export default async function OverviewPage() {
         <MetricCard
           title="Calificación Promedio"
           value={metrics.calificacionPromedio}
-          prefix="⭐ "
+          prefix={<Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />}
         />
       </div>
 
@@ -61,7 +62,7 @@ function MetricCard({
 }: {
   title: string;
   value: string | number;
-  prefix?: string;
+  prefix?: React.ReactNode;
 }) {
   return (
     <Card>
@@ -71,9 +72,9 @@ function MetricCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold flex items-center gap-1.5">
           {prefix}
-          {value}
+          <span>{value}</span>
         </div>
       </CardContent>
     </Card>
