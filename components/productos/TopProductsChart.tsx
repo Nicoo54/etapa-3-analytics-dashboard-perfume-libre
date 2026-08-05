@@ -7,6 +7,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { formatNumber } from "@/lib/utils";
 
 const chartConfig = {
   vendidas: { label: "Unidades Vendidas", color: "var(--primary)" },
@@ -33,7 +34,32 @@ export function TopProductsChart({ data }: { data: any[] }) {
               />
               <ChartTooltip
                 cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
-                content={<ChartTooltipContent />}
+                content={
+                  <ChartTooltipContent
+                    labelClassName="font-medium text-foreground"
+                    className="text-muted-foreground"
+                    formatter={(value, name) => (
+                      <>
+                        <div
+                          className="h-2.5 w-2.5 shrink-0 rounded-xs bg-(--color-bg)"
+                          style={
+                            {
+                              "--color-bg": `var(--color-${name})`,
+                            } as React.CSSProperties
+                          }
+                        />
+                        {chartConfig[name as keyof typeof chartConfig]?.label ||
+                          name}
+                        <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
+                          {formatNumber(Number(value))}
+                        </div>
+                      </>
+                    )}
+                  />
+                }
+                labelFormatter={(label) => (
+                  <span className="font-medium text-foreground">{label}</span>
+                )}
               />
               <Bar
                 dataKey="vendidas"
