@@ -31,7 +31,15 @@ export function RatingDistributionChart({ data }: { data: any[] }) {
                 tickLine={false}
                 axisLine={false}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    nameKey="estado"
+                    indicator="dot"
+                    className="w-40"
+                  />
+                }
+              />
               <Bar
                 dataKey="cantidad"
                 fill="#fbbf24"
