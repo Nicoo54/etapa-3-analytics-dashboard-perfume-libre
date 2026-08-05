@@ -13,6 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { formatCurrency } from "@/lib/utils";
 
 interface OverviewChartProps {
   data: { nombre: string; revenue: number }[];
@@ -90,11 +91,3 @@ export function OverviewChart({ data }: OverviewChartProps) {
     </Card>
   );
 }
-
-// TODO: Seguramente esta funcion se utilice en varias
-// partes del proyecto, por lo que convendria moverla a un archivo de utilidades.
-// tambien no esta de mas revisar si ya existe una funcion similar en alguna parte del proyecto.
-const formatCurrency = (value: number) => {
-  const formatted = new Intl.NumberFormat("es-AR").format(value);
-  return `${formatted} $`;
-};
