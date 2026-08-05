@@ -33,7 +33,13 @@ export function CarrierBarChart({ data }: { data: any[] }) {
               />
               <ChartTooltip
                 cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
-                content={<ChartTooltipContent />}
+                content={
+                  <ChartTooltipContent
+                    nameKey="estado"
+                    indicator="dot"
+                    className="w-40"
+                  />
+                }
               />
               <Bar
                 dataKey="envios"
