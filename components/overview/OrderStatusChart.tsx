@@ -28,7 +28,17 @@ export function OrderStatusChart({ data }: OrderStatusChartProps) {
         <ChartContainer config={chartConfig} className="h-75 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    hideLabel
+                    nameKey="estado"
+                    indicator="dot"
+                    className="w-40"
+                  />
+                }
+              />
               <Pie
                 data={data}
                 dataKey="cantidad"
