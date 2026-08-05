@@ -32,7 +32,7 @@ export default function RootLayout({
           <Sidebar />
 
           <div className="flex-1 flex flex-col h-screen overflow-hidden">
-            <header className="h-16 bg-background border-b border-border flex items-center justify-between px-8 transition-all">
+            <header className="h-16 bg-sidebar border-b border-border flex items-center justify-between px-8 transition-all">
               <h2 className="text-lg font-semibold text-foreground">
                 Panel de Control
               </h2>
@@ -49,7 +49,9 @@ export default function RootLayout({
               </div>
             </header>
 
-            <main className="flex-1 overflow-y-auto p-8">{children}</main>
+            <main className="flex-1 overflow-y-auto p-8 bg-muted/20  border-t border-l border-border/50 shadow-inner">
+              {children}
+            </main>
           </div>
         </ThemeProvider>
       </body>
