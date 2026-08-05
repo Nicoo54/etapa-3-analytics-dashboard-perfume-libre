@@ -5,6 +5,8 @@ export interface MetricCardProps {
   value: string | number;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
+  icon?: React.ReactNode;
+  description?: React.ReactNode;
 }
 
 export function MetricCard({
@@ -12,6 +14,8 @@ export function MetricCard({
   value,
   prefix = "",
   suffix = "",
+  icon,
+  description,
 }: MetricCardProps) {
   return (
     <Card>
@@ -19,6 +23,7 @@ export function MetricCard({
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
+        {icon && <div className="text-muted-foreground">{icon}</div>}
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold flex items-center gap-1.5 text-foreground">
@@ -26,6 +31,9 @@ export function MetricCard({
           <span>{value}</span>
           {suffix}
         </div>
+        {description && (
+          <p className="text-xs text-muted-foreground mt-1">{description}</p>
+        )}
       </CardContent>
     </Card>
   );
