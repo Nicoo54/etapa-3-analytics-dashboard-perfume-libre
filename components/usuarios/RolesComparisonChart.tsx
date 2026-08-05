@@ -45,7 +45,14 @@ export function RolesComparisonChart({ data }: { data: any[] }) {
               />
               <ChartTooltip
                 cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
-                content={<ChartTooltipContent />}
+                content={
+                  <ChartTooltipContent
+                    hideLabel
+                    nameKey="estado"
+                    indicator="dot"
+                    className="w-40"
+                  />
+                }
               />
               <Legend verticalAlign="top" height={36} />
               <Bar
