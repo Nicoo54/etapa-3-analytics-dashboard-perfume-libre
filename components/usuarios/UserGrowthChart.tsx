@@ -14,7 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { formatCurrency } from "@/lib/utils";
+import { formatNumber } from "@/lib/utils";
 
 const chartConfig = {
   usuarios: { label: "Usuarios Totales", color: "var(--primary)" },
@@ -84,7 +84,7 @@ export function UserGrowthChart({ data }: { data: any[] }) {
                         {chartConfig[name as keyof typeof chartConfig]?.label ||
                           name}
                         <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
-                          {formatCurrency(Number(value))}
+                          {formatNumber(Number(value))}
                         </div>
                       </>
                     )}
