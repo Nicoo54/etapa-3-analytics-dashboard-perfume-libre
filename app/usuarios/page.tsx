@@ -8,6 +8,7 @@ import { UserGrowthChart } from "@/components/usuarios/UserGrowthChart";
 import { RolesComparisonChart } from "@/components/usuarios/RolesComparisonChart";
 import { TopBuyersTable } from "@/components/usuarios/TopBuyersTable";
 import { MetricCard } from "@/components/MetricCard";
+import { UserCheck, UserPlus, Users } from "lucide-react";
 
 export default async function UsuariosPage() {
   const [kpis, crecimientoData, rolesData, topCompradores] = await Promise.all([
@@ -30,15 +31,18 @@ export default async function UsuariosPage() {
         <MetricCard
           title="Total Usuarios Registrados"
           value={kpis.totalUsuarios.toLocaleString("es-AR")}
+          icon={<Users className="w-4 h-4" />}
         />
         <MetricCard
           title="Nuevos este mes"
           value={kpis.nuevosEsteMes}
           prefix="+"
+          icon={<UserPlus className="w-4 h-4" />}
         />
         <MetricCard
           title="Compradores Recurrentes"
           value={kpis.compradoresRecurrentes.toLocaleString("es-AR")}
+          icon={<UserCheck className="w-4 h-4" />}
         />
       </div>
 

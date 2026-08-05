@@ -8,6 +8,7 @@ import { TopProductsChart } from "@/components/productos/TopProductsChart";
 import { CategoryDonutChart } from "@/components/productos/CategoryDonutChart";
 import { CatalogTable } from "@/components/productos/CatalogTable";
 import { MetricCard } from "@/components/MetricCard";
+import { Database, Eye, PauseCircle } from "lucide-react";
 
 export default async function ProductosPage() {
   const [kpis, topData, categoriaData, catalogoData] = await Promise.all([
@@ -30,14 +31,17 @@ export default async function ProductosPage() {
         <MetricCard
           title="Total Productos Históricos"
           value={kpis.total.toLocaleString("es-AR")}
+          icon={<Database className="w-4 h-4" />}
         />
         <MetricCard
           title="Publicaciones Activas"
           value={kpis.activos.toLocaleString("es-AR")}
+          icon={<Eye className="w-4 h-4" />}
         />
         <MetricCard
           title="Publicaciones Pausadas"
           value={kpis.pausados.toLocaleString("es-AR")}
+          icon={<PauseCircle className="w-4 h-4" />}
         />
       </div>
 

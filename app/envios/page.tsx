@@ -8,6 +8,7 @@ import { ShippingStatusDonut } from "@/components/envios/ShippingStatusDonut";
 import { CarrierBarChart } from "@/components/envios/CarrierBarChart";
 import { ShippingVolumeChart } from "@/components/envios/ShippingVolumeChart";
 import { MetricCard } from "@/components/MetricCard";
+import { Clock, PackageCheck, Truck } from "lucide-react";
 
 export default async function EnviosPage() {
   const [kpis, estadosData, operadorData, volumenData] = await Promise.all([
@@ -29,8 +30,16 @@ export default async function EnviosPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <MetricCard title="Paquetes en Tránsito" value={kpis.enTransito} />
-        <MetricCard title="Entregados Hoy" value={kpis.entregadosHoy} />
+        <MetricCard
+          title="Paquetes en Tránsito"
+          value={kpis.enTransito}
+          icon={<Truck className="w-4 h-4" />}
+        />
+        <MetricCard
+          title="Entregados Hoy"
+          value={kpis.entregadosHoy}
+          icon={<PackageCheck className="w-4 h-4" />}
+        />
         <MetricCard
           title="Tiempo Promedio de Entrega"
           value={kpis.tiempoPromedio}
@@ -39,6 +48,7 @@ export default async function EnviosPage() {
               días
             </span>
           }
+          icon={<Clock className="w-4 h-4" />}
         />
       </div>
 

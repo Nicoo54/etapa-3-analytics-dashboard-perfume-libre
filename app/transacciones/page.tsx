@@ -8,6 +8,7 @@ import {
   getTransaccionesKPIs,
   getUltimasOrdenes,
 } from "@/lib/api/transaccionesData";
+import { Ban, Ticket, TrendingUp } from "lucide-react";
 
 export default async function TransaccionesPage() {
   const [kpis, revenueData, ordenesDiaData, ultimasOrdenes] = await Promise.all(
@@ -35,13 +36,19 @@ export default async function TransaccionesPage() {
           title="Ticket Promedio"
           value={kpis.ticketPromedio.toLocaleString("es-AR")}
           prefix="$"
+          icon={<Ticket className="w-4 h-4" />}
         />
         <MetricCard
           title="Tasa de Conversión"
           value={kpis.tasaConversion}
           suffix="%"
+          icon={<TrendingUp className="w-4 h-4" />}
         />
-        <MetricCard title="Órdenes Canceladas" value={kpis.ordenesCanceladas} />
+        <MetricCard
+          title="Órdenes Canceladas"
+          value={kpis.ordenesCanceladas}
+          icon={<Ban className="w-4 h-4" />}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">

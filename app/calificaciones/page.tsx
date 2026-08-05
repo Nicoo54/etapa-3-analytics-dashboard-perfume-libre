@@ -7,7 +7,7 @@ import {
 import { RatingDistributionChart } from "@/components/calificaciones/RatingDistributionChart";
 import { RatingEvolutionChart } from "@/components/calificaciones/RatingEvolutionChart";
 import { SellersAtRiskTable } from "@/components/calificaciones/SellersAtRiskTable";
-import { Star } from "lucide-react";
+import { Flag, MessageSquare, Star, Trophy } from "lucide-react";
 import { MetricCard } from "@/components/MetricCard";
 
 export default async function CalificacionesPage() {
@@ -36,14 +36,17 @@ export default async function CalificacionesPage() {
           title="Promedio Global"
           value={kpis.promedioGlobal.toFixed(1)}
           suffix={<Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />}
+          icon={<Trophy className="w-4 h-4" />}
         />
         <MetricCard
           title="Total de Reseñas"
           value={kpis.totalResenas.toLocaleString("es-AR")}
+          icon={<MessageSquare className="w-4 h-4" />}
         />
         <MetricCard
           title="Reportes Pendientes (Moderación)"
           value={kpis.reportesPendientes}
+          icon={<Flag className="w-4 h-4" />}
         />
       </div>
 
