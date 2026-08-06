@@ -4,39 +4,11 @@ import {
   getEvolucionPromedio,
   getVendedoresEnRiesgo,
 } from "@/lib/api/calificacionesData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RatingDistributionChart } from "@/components/calificaciones/RatingDistributionChart";
 import { RatingEvolutionChart } from "@/components/calificaciones/RatingEvolutionChart";
 import { SellersAtRiskTable } from "@/components/calificaciones/SellersAtRiskTable";
-
-function MetricCard({
-  title,
-  value,
-  prefix = "",
-  suffix = "",
-}: {
-  title: string;
-  value: string | number;
-  prefix?: string;
-  suffix?: string;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">
-          {prefix}
-          {value}
-          {suffix}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { Flag, MessageSquare, Star, Trophy } from "lucide-react";
+import { MetricCard } from "@/components/MetricCard";
 
 export default async function CalificacionesPage() {
   const [kpis, distribucionData, evolucionData, riesgoData] = await Promise.all(
@@ -51,10 +23,10 @@ export default async function CalificacionesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+        <h1 className="text-2xl font-bold text-foreground mb-1">
           Feedback y Calidad
         </h1>
-        <p className="text-gray-500 text-sm">
+        <p className="text-muted-foreground text-sm">
           Monitoreo de la satisfacción del usuario y reputación de vendedores.
         </p>
       </div>
@@ -63,15 +35,18 @@ export default async function CalificacionesPage() {
         <MetricCard
           title="Promedio Global"
           value={kpis.promedioGlobal.toFixed(1)}
-          suffix=" ⭐"
+          suffix={<Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />}
+          icon={<Trophy className="w-4 h-4" />}
         />
         <MetricCard
           title="Total de Reseñas"
           value={kpis.totalResenas.toLocaleString("es-AR")}
+          icon={<MessageSquare className="w-4 h-4" />}
         />
         <MetricCard
           title="Reportes Pendientes (Moderación)"
           value={kpis.reportesPendientes}
+          icon={<Flag className="w-4 h-4" />}
         />
       </div>
 

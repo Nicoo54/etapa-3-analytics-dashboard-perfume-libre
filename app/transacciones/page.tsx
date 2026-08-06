@@ -1,42 +1,14 @@
+import { MetricCard } from "@/components/MetricCard";
 import { OrdersByDayChart } from "@/components/transacciones/OrdersByDayChart";
 import { RecentOrdersTable } from "@/components/transacciones/RecentOrdersTable";
 import { RevenueLineChart } from "@/components/transacciones/RevenueLineChart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   getOrdenesPorDiaData,
   getRevenueAcumuladoData,
   getTransaccionesKPIs,
   getUltimasOrdenes,
 } from "@/lib/api/transaccionesData";
-
-function MetricCard({
-  title,
-  value,
-  prefix = "",
-  suffix = "",
-}: {
-  title: string;
-  value: string | number;
-  prefix?: string;
-  suffix?: string;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">
-          {prefix}
-          {value}
-          {suffix}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { Ban, Ticket, TrendingUp } from "lucide-react";
 
 export default async function TransaccionesPage() {
   const [kpis, revenueData, ordenesDiaData, ultimasOrdenes] = await Promise.all(
@@ -51,8 +23,10 @@ export default async function TransaccionesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Transacciones</h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-2xl font-bold text-foreground mb-1">
+          Transacciones
+        </h1>
+        <p className="text-muted-foreground text-sm">
           Análisis de volumen de ventas y patrones de compra.
         </p>
       </div>
@@ -62,13 +36,19 @@ export default async function TransaccionesPage() {
           title="Ticket Promedio"
           value={kpis.ticketPromedio.toLocaleString("es-AR")}
           prefix="$"
+          icon={<Ticket className="w-4 h-4" />}
         />
         <MetricCard
           title="Tasa de Conversión"
           value={kpis.tasaConversion}
           suffix="%"
+          icon={<TrendingUp className="w-4 h-4" />}
         />
-        <MetricCard title="Órdenes Canceladas" value={kpis.ordenesCanceladas} />
+        <MetricCard
+          title="Órdenes Canceladas"
+          value={kpis.ordenesCanceladas}
+          icon={<Ban className="w-4 h-4" />}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
@@ -76,7 +56,7 @@ export default async function TransaccionesPage() {
         <OrdersByDayChart data={ordenesDiaData} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3">
+      <div className="mt-8">
         <RecentOrdersTable data={ultimasOrdenes} />
       </div>
     </div>

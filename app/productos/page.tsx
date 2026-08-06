@@ -4,39 +4,11 @@ import {
   getDistribucionCategorias,
   getUltimosProductos,
 } from "@/lib/api/productosData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TopProductsChart } from "@/components/productos/TopProductsChart";
 import { CategoryDonutChart } from "@/components/productos/CategoryDonutChart";
 import { CatalogTable } from "@/components/productos/CatalogTable";
-
-function MetricCard({
-  title,
-  value,
-  prefix = "",
-  suffix = "",
-}: {
-  title: string;
-  value: string | number;
-  prefix?: string;
-  suffix?: string;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">
-          {prefix}
-          {value}
-          {suffix}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { MetricCard } from "@/components/MetricCard";
+import { Database, Eye, PauseCircle } from "lucide-react";
 
 export default async function ProductosPage() {
   const [kpis, topData, categoriaData, catalogoData] = await Promise.all([
@@ -49,8 +21,8 @@ export default async function ProductosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Catálogo</h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-2xl font-bold text-foreground mb-1">Catálogo</h1>
+        <p className="text-muted-foreground text-sm">
           Estado de las publicaciones y rendimiento de productos C2C.
         </p>
       </div>
@@ -59,14 +31,17 @@ export default async function ProductosPage() {
         <MetricCard
           title="Total Productos Históricos"
           value={kpis.total.toLocaleString("es-AR")}
+          icon={<Database className="w-4 h-4" />}
         />
         <MetricCard
           title="Publicaciones Activas"
           value={kpis.activos.toLocaleString("es-AR")}
+          icon={<Eye className="w-4 h-4" />}
         />
         <MetricCard
           title="Publicaciones Pausadas"
           value={kpis.pausados.toLocaleString("es-AR")}
+          icon={<PauseCircle className="w-4 h-4" />}
         />
       </div>
 
@@ -75,7 +50,7 @@ export default async function ProductosPage() {
         <CategoryDonutChart data={categoriaData} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3">
+      <div className="mt-8">
         <CatalogTable data={catalogoData} />
       </div>
     </div>

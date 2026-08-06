@@ -4,36 +4,11 @@ import {
   getEnviosPorOperador,
   getVolumenEnviosDia,
 } from "@/lib/api/enviosData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShippingStatusDonut } from "@/components/envios/ShippingStatusDonut";
 import { CarrierBarChart } from "@/components/envios/CarrierBarChart";
 import { ShippingVolumeChart } from "@/components/envios/ShippingVolumeChart";
-
-function MetricCard({
-  title,
-  value,
-  suffix = "",
-}: {
-  title: string;
-  value: string | number;
-  suffix?: string;
-}) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">
-          {value}
-          {suffix}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { MetricCard } from "@/components/MetricCard";
+import { Clock, PackageCheck, Truck } from "lucide-react";
 
 export default async function EnviosPage() {
   const [kpis, estadosData, operadorData, volumenData] = await Promise.all([
@@ -46,21 +21,34 @@ export default async function EnviosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+        <h1 className="text-2xl font-bold text-foreground mb-1">
           Logística y Envíos
         </h1>
-        <p className="text-gray-500 text-sm">
+        <p className="text-muted-foreground text-sm">
           Monitoreo de despachos, tiempos de entrega y distribución de carga.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <MetricCard title="Paquetes en Tránsito" value={kpis.enTransito} />
-        <MetricCard title="Entregados Hoy" value={kpis.entregadosHoy} />
+        <MetricCard
+          title="Paquetes en Tránsito"
+          value={kpis.enTransito}
+          icon={<Truck className="w-4 h-4" />}
+        />
+        <MetricCard
+          title="Entregados Hoy"
+          value={kpis.entregadosHoy}
+          icon={<PackageCheck className="w-4 h-4" />}
+        />
         <MetricCard
           title="Tiempo Promedio de Entrega"
           value={kpis.tiempoPromedio}
-          suffix=" días"
+          suffix={
+            <span className="text-base font-normal text-muted-foreground">
+              días
+            </span>
+          }
+          icon={<Clock className="w-4 h-4" />}
         />
       </div>
 
@@ -69,7 +57,7 @@ export default async function EnviosPage() {
         <CarrierBarChart data={operadorData} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3">
+      <div className="mt-8">
         <ShippingVolumeChart data={volumenData} />
       </div>
     </div>

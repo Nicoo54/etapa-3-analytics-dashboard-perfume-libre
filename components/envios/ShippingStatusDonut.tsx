@@ -4,6 +4,8 @@ import { Pie, PieChart, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -41,7 +43,16 @@ export function ShippingStatusDonut({ data }: { data: any[] }) {
         <ChartContainer config={dynamicConfig} className="h-75 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    hideLabel
+                    nameKey="estado"
+                    indicator="dot"
+                    className="w-40"
+                  />
+                }
+              />
               <Pie
                 data={chartData}
                 dataKey="cantidad"
@@ -51,6 +62,13 @@ export function ShippingStatusDonut({ data }: { data: any[] }) {
                 innerRadius={60}
                 outerRadius={80}
                 paddingAngle={5}
+              />
+              <ChartLegend
+                layout="vertical"
+                align="center"
+                verticalAlign="bottom"
+                content={<ChartLegendContent nameKey="estado" />}
+                className="flex-wrap justify-center gap-4 mt-6 text-sm"
               />
             </PieChart>
           </ResponsiveContainer>
