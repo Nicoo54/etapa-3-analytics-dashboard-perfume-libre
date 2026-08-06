@@ -1,8 +1,8 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Sidebar } from "@/components/Sidebar";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
