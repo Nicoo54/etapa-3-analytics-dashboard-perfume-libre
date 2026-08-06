@@ -20,7 +20,7 @@ import { useState } from "react";
 import { useTheme } from "next-themes";
 
 const navItems = [
-  { href: "/overview", label: "Overview", icon: LayoutDashboard },
+  { href: "/general", label: "General", icon: LayoutDashboard },
   { href: "/transacciones", label: "Transacciones", icon: ArrowRightLeft },
   { href: "/usuarios", label: "Usuarios", icon: Users },
   { href: "/productos", label: "Productos", icon: Package },
