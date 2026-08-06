@@ -49,7 +49,7 @@ export default function RootLayout({
               </div>
             </header>
 
-            <main className="flex-1 overflow-y-auto p-8 bg-muted/20  border-t border-l border-border/50 shadow-inner">
+            <main className="flex-1 overflow-y-auto no-scrollbar p-8 bg-muted/20 border-t border-l border-border/50 shadow-inner">
               {children}
             </main>
           </div>

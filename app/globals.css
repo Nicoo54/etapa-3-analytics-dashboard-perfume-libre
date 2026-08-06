@@ -201,3 +201,13 @@
   --chart-transit: hsl(217.2 91.2% 59.8%);
   --chart-preparing: hsl(47.9 90% 60%);
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
