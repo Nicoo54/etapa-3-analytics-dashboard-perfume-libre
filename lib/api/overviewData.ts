@@ -1,30 +1,66 @@
+export interface MetricWithTrend {
+  valor: number;
+  tendencia: number | null;
+}
+
 export type OverviewMetrics = {
-  totalOrdenes: number;
-  revenueTotal: number;
-  usuariosActivos: number;
+  totalOrdenes: MetricWithTrend;
+  revenueTotal: MetricWithTrend;
+  usuariosActivos: MetricWithTrend;
   calificacionPromedio: number;
 };
 
-export async function getOverviewMetricas(): Promise<OverviewMetrics> {
+export async function getOverviewMetricas(
+  rango: string = "30d",
+): Promise<OverviewMetrics> {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    return {
-      totalOrdenes: 1248,
-      revenueTotal: 45200.5,
-      usuariosActivos: 342,
-      calificacionPromedio: 4.3,
-    };
+    switch (rango) {
+      case "7d":
+        return {
+          totalOrdenes: { valor: 320, tendencia: 5.2 },
+          revenueTotal: { valor: 12500, tendencia: -2.1 },
+          usuariosActivos: { valor: 85, tendencia: 12.0 },
+          calificacionPromedio: 4.5,
+        };
+      case "mes_actual":
+        return {
+          totalOrdenes: { valor: 850, tendencia: 15.4 },
+          revenueTotal: { valor: 31000, tendencia: 8.9 },
+          usuariosActivos: { valor: 210, tendencia: 5.5 },
+          calificacionPromedio: 4.4,
+        };
+      case "all":
+        return {
+          totalOrdenes: { valor: 5420, tendencia: null },
+          revenueTotal: { valor: 254000, tendencia: null },
+          usuariosActivos: { valor: 1240, tendencia: null },
+          calificacionPromedio: 4.6,
+        };
+      case "30d":
+      default:
+        return {
+          totalOrdenes: { valor: 1248, tendencia: 12.5 },
+          revenueTotal: { valor: 45200.5, tendencia: 20.1 },
+          usuariosActivos: { valor: 342, tendencia: -3.4 },
+          calificacionPromedio: 4.3,
+        };
+    }
   }
 
   try {
     const [ordenesRes, usuariosRes, feedbackRes] = await Promise.all([
-      fetch("https://buyer-app.vercel.app/api/admin/ordenes/metricas"),
-      fetch("https://buyer-app.vercel.app/api/admin/usuarios/activos"),
       fetch(
-        "https://feedback-app.vercel.app/api/admin/calificaciones/promedio",
+        `https://buyer-app.vercel.app/api/admin/ordenes/metricas?rango=${rango}`,
+      ),
+      fetch(
+        `https://buyer-app.vercel.app/api/admin/usuarios/activos?rango=${rango}`,
+      ),
+      fetch(
+        `https://feedback-app.vercel.app/api/admin/calificaciones/promedio?rango=${rango}`,
       ),
     ]);
 
@@ -33,17 +69,20 @@ export async function getOverviewMetricas(): Promise<OverviewMetrics> {
     const feedback = await feedbackRes.json();
 
     return {
-      totalOrdenes: ordenes.total,
-      revenueTotal: ordenes.revenue,
-      usuariosActivos: usuarios.total,
+      totalOrdenes: { valor: ordenes.total, tendencia: ordenes.tendencia },
+      revenueTotal: {
+        valor: ordenes.revenue,
+        tendencia: ordenes.tendenciaRevenue,
+      },
+      usuariosActivos: { valor: usuarios.total, tendencia: usuarios.tendencia },
       calificacionPromedio: feedback.promedio,
     };
   } catch (error) {
     console.error("Error obteniendo métricas reales:", error);
     return {
-      totalOrdenes: 0,
-      revenueTotal: 0,
-      usuariosActivos: 0,
+      totalOrdenes: { valor: 0, tendencia: null },
+      revenueTotal: { valor: 0, tendencia: null },
+      usuariosActivos: { valor: 0, tendencia: null },
       calificacionPromedio: 0,
     };
   }
