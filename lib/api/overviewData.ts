@@ -88,24 +88,57 @@ export async function getOverviewMetricas(
   }
 }
 
-export async function getRevenueData() {
+export async function getRevenueData(rango: string = "30d") {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
-    return [
-      { nombre: "Lun", revenue: 4500 },
-      { nombre: "Mar", revenue: 5200 },
-      { nombre: "Mié", revenue: 3800 },
-      { nombre: "Jue", revenue: 6100 },
-      { nombre: "Vie", revenue: 7500 },
-      { nombre: "Sáb", revenue: 8200 },
-      { nombre: "Dom", revenue: 6900 },
-    ];
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    switch (rango) {
+      case "7d":
+        return [
+          { nombre: "Lun", revenue: 4500 },
+          { nombre: "Mar", revenue: 5200 },
+          { nombre: "Mié", revenue: 3800 },
+          { nombre: "Jue", revenue: 6100 },
+          { nombre: "Vie", revenue: 7500 },
+          { nombre: "Sáb", revenue: 8200 },
+          { nombre: "Dom", revenue: 6900 },
+        ];
+
+      case "mes_actual":
+        return [
+          { nombre: "Semana 1", revenue: 12000 },
+          { nombre: "Semana 2", revenue: 15500 },
+          { nombre: "Semana 3", revenue: 14200 },
+          { nombre: "Semana 4", revenue: 18000 },
+        ];
+
+      case "all":
+        return [
+          { nombre: "Ene", revenue: 45000 },
+          { nombre: "Feb", revenue: 52000 },
+          { nombre: "Mar", revenue: 48000 },
+          { nombre: "Abr", revenue: 61000 },
+          { nombre: "May", revenue: 59000 },
+          { nombre: "Jun", revenue: 75000 },
+        ];
+
+      case "30d":
+      default:
+        return [
+          { nombre: "01-07", revenue: 18000 },
+          { nombre: "08-14", revenue: 21500 },
+          { nombre: "15-21", revenue: 19800 },
+          { nombre: "22-28", revenue: 24200 },
+          { nombre: "29-30", revenue: 8100 },
+        ];
+    }
   }
 
   try {
     const res = await fetch(
-      "https://buyer-app.vercel.app/api/admin/ordenes/serie-temporal",
+      `https://buyer-app.vercel.app/api/admin/ordenes/serie-temporal?rango=${rango}`,
     );
 
     if (!res.ok) throw new Error("API error");
@@ -117,22 +150,70 @@ export async function getRevenueData() {
   }
 }
 
-export async function getOrderStatusData() {
+export async function getOrderStatusData(rango: string = "30d") {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
-    return [
-      { estado: "completada", cantidad: 350, fill: "var(--color-completada)" },
-      { estado: "en_curso", cantidad: 120, fill: "var(--color-en_curso)" },
-      { estado: "cancelada", cantidad: 30, fill: "var(--color-cancelada)" },
-    ];
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    switch (rango) {
+      case "7d":
+        return [
+          {
+            estado: "completada",
+            cantidad: 85,
+            fill: "var(--color-completada)",
+          },
+          { estado: "en_curso", cantidad: 45, fill: "var(--color-en_curso)" },
+          { estado: "cancelada", cantidad: 5, fill: "var(--color-cancelada)" },
+        ];
+      case "mes_actual":
+        return [
+          {
+            estado: "completada",
+            cantidad: 210,
+            fill: "var(--color-completada)",
+          },
+          { estado: "en_curso", cantidad: 90, fill: "var(--color-en_curso)" },
+          { estado: "cancelada", cantidad: 12, fill: "var(--color-cancelada)" },
+        ];
+      case "all":
+        return [
+          {
+            estado: "completada",
+            cantidad: 4500,
+            fill: "var(--color-completada)",
+          },
+          { estado: "en_curso", cantidad: 320, fill: "var(--color-en_curso)" },
+          {
+            estado: "cancelada",
+            cantidad: 150,
+            fill: "var(--color-cancelada)",
+          },
+        ];
+      case "30d":
+      default:
+        return [
+          {
+            estado: "completada",
+            cantidad: 350,
+            fill: "var(--color-completada)",
+          },
+          { estado: "en_curso", cantidad: 120, fill: "var(--color-en_curso)" },
+          { estado: "cancelada", cantidad: 30, fill: "var(--color-cancelada)" },
+        ];
+    }
   }
 
   try {
     const res = await fetch(
-      "https://buyer-app.vercel.app/api/admin/metricas/ordenes/por-estado",
+      `https://buyer-app.vercel.app/api/admin/metricas/ordenes/por-estado?rango=${rango}`,
     );
+
+    if (!res.ok) throw new Error("API error");
+
     const data = await res.json();
+
     return Object.entries(data).map(([key, value]) => ({
       estado: key,
       cantidad: Number(value),
