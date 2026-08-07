@@ -20,11 +20,17 @@ const chartConfig = {
   promedio: { label: "Calificación Promedio", color: "var(--primary)" },
 };
 
-export function RatingEvolutionChart({ data }: { data: any[] }) {
+export function RatingEvolutionChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-1 lg:col-span-2">
       <CardHeader>
-        <CardTitle>Evolución del Promedio Global</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">

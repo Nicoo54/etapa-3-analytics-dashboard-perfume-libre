@@ -34,11 +34,17 @@ const CustomYAxisTick = ({ x, y, payload }: any) => {
   );
 };
 
-export function RatingDistributionChart({ data }: { data: any[] }) {
+export function RatingDistributionChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Distribución de Calificaciones</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-72 w-full">
