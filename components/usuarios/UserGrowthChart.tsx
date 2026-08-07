@@ -53,7 +53,7 @@ export function UserGrowthChart({ data }: { data: any[] }) {
                 stroke="#e5e7eb"
               />
               <XAxis
-                dataKey="mes"
+                dataKey="fecha"
                 stroke="#888888"
                 fontSize={12}
                 tickLine={false}

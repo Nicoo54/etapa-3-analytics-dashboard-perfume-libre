@@ -10,12 +10,19 @@ import { TopBuyersTable } from "@/components/usuarios/TopBuyersTable";
 import { MetricCard } from "@/components/MetricCard";
 import { UserCheck, UserPlus, Users } from "lucide-react";
 
-export default async function UsuariosPage() {
+export default async function UsuariosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rango?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const rango = resolvedSearchParams?.rango || "30d";
+
   const [kpis, crecimientoData, rolesData, topCompradores] = await Promise.all([
-    getUsuariosKPIs(),
-    getCrecimientoUsuariosData(),
-    getCompradoresVsVendedoresData(),
-    getTopCompradores(),
+    getUsuariosKPIs(rango),
+    getCrecimientoUsuariosData(rango),
+    getCompradoresVsVendedoresData(rango),
+    getTopCompradores(rango),
   ]);
 
   return (
