@@ -10,15 +10,27 @@ import {
 } from "@/lib/api/transaccionesData";
 import { Ban, Ticket, TrendingUp } from "lucide-react";
 
-export default async function TransaccionesPage() {
+export default async function TransaccionesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rango?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const rango = resolvedSearchParams?.rango || "30d";
+
   const [kpis, revenueData, ordenesDiaData, ultimasOrdenes] = await Promise.all(
     [
-      getTransaccionesKPIs(),
-      getRevenueAcumuladoData(),
-      getOrdenesPorDiaData(),
-      getUltimasOrdenes(),
+      getTransaccionesKPIs(rango),
+      getRevenueAcumuladoData(rango),
+      getOrdenesPorDiaData(rango),
+      getUltimasOrdenes(rango),
     ],
   );
+
+  let tituloGrafico = "Órdenes (Últimos 30 días)";
+  if (rango === "7d") tituloGrafico = "Órdenes (Últimos 7 días)";
+  if (rango === "mes_actual") tituloGrafico = "Órdenes por Semana (Este Mes)";
+  if (rango === "all") tituloGrafico = "Órdenes Históricas (Por Mes)";
 
   return (
     <div className="space-y-6">
@@ -53,7 +65,7 @@ export default async function TransaccionesPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
         <RevenueLineChart data={revenueData} />
-        <OrdersByDayChart data={ordenesDiaData} />
+        <OrdersByDayChart data={ordenesDiaData} title={tituloGrafico} />
       </div>
 
       <div className="mt-8">
