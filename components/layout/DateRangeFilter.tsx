@@ -7,16 +7,13 @@ export function DateRangeFilter() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Leemos el valor actual de la URL. Si no hay, asumimos "30d" (últimos 30 días)
   const currentRange = searchParams.get("rango") || "30d";
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newRange = e.target.value;
-    // Construimos la nueva URL manteniendo los parámetros existentes
     const params = new URLSearchParams(searchParams.toString());
     params.set("rango", newRange);
 
-    // Actualizamos la URL (esto hace que el Server Component vuelva a pedir datos)
     router.push(`${pathname}?${params.toString()}`);
   };
 
