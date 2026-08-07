@@ -10,13 +10,42 @@ import { ShippingVolumeChart } from "@/components/envios/ShippingVolumeChart";
 import { MetricCard } from "@/components/MetricCard";
 import { Clock, PackageCheck, Truck } from "lucide-react";
 
-export default async function EnviosPage() {
+export default async function EnviosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rango?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const rango = resolvedSearchParams?.rango || "30d";
+
   const [kpis, estadosData, operadorData, volumenData] = await Promise.all([
-    getEnviosKPIs(),
-    getDistribucionEstados(),
-    getEnviosPorOperador(),
-    getVolumenEnviosDia(),
+    getEnviosKPIs(rango),
+    getDistribucionEstados(rango),
+    getEnviosPorOperador(rango),
+    getVolumenEnviosDia(rango),
   ]);
+
+  let entregadosLabel = "Entregados (Últimos 30 días)";
+  let distTitle = "Distribución de Estados";
+  let opTitle = "Envíos por Operador";
+  let volTitle = "Volumen de Envíos";
+
+  if (rango === "7d") {
+    entregadosLabel = "Entregados (Últimos 7 días)";
+    distTitle = "Estados (Últimos 7 días)";
+    opTitle = "Operadores (Últimos 7 días)";
+    volTitle = "Volumen Semanal";
+  } else if (rango === "mes_actual") {
+    entregadosLabel = "Entregados (Este mes)";
+    distTitle = "Estados (Este mes)";
+    opTitle = "Operadores (Este mes)";
+    volTitle = "Volumen Mensual";
+  } else if (rango === "all") {
+    entregadosLabel = "Entregados (Histórico)";
+    distTitle = "Estados (Histórico)";
+    opTitle = "Operadores (Histórico)";
+    volTitle = "Volumen Histórico";
+  }
 
   return (
     <div className="space-y-6">
@@ -36,8 +65,8 @@ export default async function EnviosPage() {
           icon={<Truck className="w-4 h-4" />}
         />
         <MetricCard
-          title="Entregados Hoy"
-          value={kpis.entregadosHoy}
+          title={entregadosLabel}
+          value={kpis.entregados}
           icon={<PackageCheck className="w-4 h-4" />}
         />
         <MetricCard
@@ -53,12 +82,12 @@ export default async function EnviosPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
-        <ShippingStatusDonut data={estadosData} />
-        <CarrierBarChart data={operadorData} />
+        <ShippingStatusDonut data={estadosData} title={distTitle} />
+        <CarrierBarChart data={operadorData} title={opTitle} />
       </div>
 
       <div className="mt-8">
-        <ShippingVolumeChart data={volumenData} />
+        <ShippingVolumeChart data={volumenData} title={volTitle} />
       </div>
     </div>
   );

@@ -20,11 +20,17 @@ const chartConfig = {
   despachados: { label: "Paquetes Despachados", color: "hsl(var(--primary))" },
 };
 
-export function ShippingVolumeChart({ data }: { data: any[] }) {
+export function ShippingVolumeChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-3 mt-6">
       <CardHeader>
-        <CardTitle>Volumen de Envíos por Día</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">
