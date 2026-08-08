@@ -8,6 +8,7 @@ import {
   getTransaccionesKPIs,
   getUltimasOrdenes,
 } from "@/lib/api/transaccionesData";
+import { getDateRangeLabel } from "@/lib/utils";
 import { Ban, Ticket, TrendingUp } from "lucide-react";
 
 export default async function TransaccionesPage({
@@ -27,10 +28,26 @@ export default async function TransaccionesPage({
     ],
   );
 
-  let tituloGrafico = "Órdenes (Últimos 30 días)";
-  if (rango === "7d") tituloGrafico = "Órdenes (Últimos 7 días)";
-  if (rango === "mes_actual") tituloGrafico = "Órdenes por Semana (Este Mes)";
-  if (rango === "all") tituloGrafico = "Órdenes Históricas (Por Mes)";
+  let labelGraficoOrdenes = "Órdenes (Últimos 30 días)";
+  let labelGraficoRevenue = "Revenue (Últimos 30 días)";
+  const labelRango = getDateRangeLabel(rango);
+
+  const labelTicketPromedio = "Ticket Promedio " + labelRango;
+  const labelTasaConversion = "Tasa de Conversión " + labelRango;
+  const labelOrdenesCanceladas = "Órdenes Canceladas " + labelRango;
+
+  if (rango === "7d") {
+    labelGraficoOrdenes = "Órdenes (Últimos 7 días)";
+    labelGraficoRevenue = "Revenue (Últimos 7 días)";
+  }
+  if (rango === "mes_actual") {
+    labelGraficoOrdenes = "Órdenes de este mes";
+    labelGraficoRevenue = "Revenue de este mes";
+  }
+  if (rango === "all") {
+    labelGraficoOrdenes = "Órdenes Históricas";
+    labelGraficoRevenue = "Revenue Histórico";
+  }
 
   return (
     <div className="space-y-6">
@@ -45,27 +62,27 @@ export default async function TransaccionesPage({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MetricCard
-          title="Ticket Promedio"
+          title={labelTicketPromedio}
           value={kpis.ticketPromedio.toLocaleString("es-AR")}
           prefix="$"
           icon={<Ticket className="w-4 h-4" />}
         />
         <MetricCard
-          title="Tasa de Conversión"
+          title={labelTasaConversion}
           value={kpis.tasaConversion}
           suffix="%"
           icon={<TrendingUp className="w-4 h-4" />}
         />
         <MetricCard
-          title="Órdenes Canceladas"
+          title={labelOrdenesCanceladas}
           value={kpis.ordenesCanceladas}
           icon={<Ban className="w-4 h-4" />}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
-        <RevenueLineChart data={revenueData} />
-        <OrdersByDayChart data={ordenesDiaData} title={tituloGrafico} />
+        <RevenueLineChart data={revenueData} title={labelGraficoRevenue} />
+        <OrdersByDayChart data={ordenesDiaData} title={labelGraficoOrdenes} />
       </div>
 
       <div className="mt-8">
