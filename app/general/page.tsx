@@ -6,6 +6,7 @@ import {
   getOverviewMetricas,
   getRevenueData,
 } from "@/lib/api/overviewData";
+import { getDateRangeLabel } from "@/lib/utils";
 import { Star, ShoppingBag, DollarSign, Users, Trophy } from "lucide-react";
 
 function TendencyText({
@@ -44,9 +45,24 @@ export default async function OverviewPage({
   ]);
 
   let labelTendencia = "";
-  if (rango === "7d") labelTendencia = "vs últimos 7 días";
-  if (rango === "30d") labelTendencia = "vs últimos 30 días";
-  if (rango === "mes_actual") labelTendencia = "vs mes anterior";
+  let labelOverview = "Ingresos historicos";
+  let labelStatus = "Estado de órdenes historico";
+
+  if (rango === "7d") {
+    labelTendencia = "vs últimos 7 días";
+    labelOverview = "Ingresos de la ultima semana";
+    labelStatus = "Estado de órdenes de la ultima semana";
+  }
+  if (rango === "30d") {
+    labelTendencia = "vs últimos 30 días";
+    labelOverview = "Ingresos de los últimos 30 días";
+    labelStatus = "Estado de órdenes de los últimos 30 días";
+  }
+  if (rango === "mes_actual") {
+    labelTendencia = "vs mes anterior";
+    labelOverview = "Ingresos del mes actual";
+    labelStatus = "Estado de órdenes del mes actual";
+  }
 
   return (
     <div className="space-y-6">
@@ -106,8 +122,8 @@ export default async function OverviewPage({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
-        <OverviewChart data={revenueData} />
-        <OrderStatusChart data={statusData} />
+        <OverviewChart data={revenueData} title={labelOverview} />
+        <OrderStatusChart data={statusData} title={labelStatus} />
       </div>
     </div>
   );

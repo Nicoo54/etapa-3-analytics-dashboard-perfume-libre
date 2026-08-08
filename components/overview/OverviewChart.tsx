@@ -17,6 +17,7 @@ import { formatCurrency } from "@/lib/utils";
 
 interface OverviewChartProps {
   data: { nombre: string; revenue: number }[];
+  title: string;
 }
 
 const chartConfig = {
@@ -26,11 +27,11 @@ const chartConfig = {
   },
 };
 
-export function OverviewChart({ data }: OverviewChartProps) {
+export function OverviewChart({ data, title }: OverviewChartProps) {
   return (
     <Card className="col-span-2">
       <CardHeader>
-        <CardTitle>Ingresos de la última semana</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">

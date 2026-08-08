@@ -18,13 +18,14 @@ const chartConfig = {
 
 interface OrderStatusChartProps {
   data: { estado: string; cantidad: number; fill: string }[];
+  title: string;
 }
 
-export function OrderStatusChart({ data }: OrderStatusChartProps) {
+export function OrderStatusChart({ data, title }: OrderStatusChartProps) {
   return (
     <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Estado de Órdenes</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-64 w-full">
