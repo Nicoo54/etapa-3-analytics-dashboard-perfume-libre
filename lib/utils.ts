@@ -12,3 +12,17 @@ export function formatNumber(value: number) {
 export function formatCurrency(value: number) {
   return `${formatNumber(value)} $`;
 }
+
+export function getDateRangeLabel(rango: string = "30d"): string {
+  switch (rango) {
+    case "7d":
+      return "(Últimos 7 días)";
+    case "mes_actual":
+      return "(Este mes)";
+    case "all":
+      return "(Histórico)";
+    case "30d":
+    default:
+      return "(Últimos 30 días)";
+  }
+}

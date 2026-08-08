@@ -9,6 +9,7 @@ import { CarrierBarChart } from "@/components/envios/CarrierBarChart";
 import { ShippingVolumeChart } from "@/components/envios/ShippingVolumeChart";
 import { MetricCard } from "@/components/MetricCard";
 import { Clock, PackageCheck, Truck } from "lucide-react";
+import { getDateRangeLabel } from "@/lib/utils";
 
 export default async function EnviosPage({
   searchParams,
@@ -25,25 +26,19 @@ export default async function EnviosPage({
     getVolumenEnviosDia(rango),
   ]);
 
-  let entregadosLabel = "Entregados (Últimos 30 días)";
-  let distTitle = "Distribución de Estados";
-  let opTitle = "Envíos por Operador";
   let volTitle = "Volumen de Envíos";
 
+  const dateRangeLabel = getDateRangeLabel(rango);
+
+  const entregadosLabel = "Entregados " + dateRangeLabel;
+  const distTitle = "Estados " + dateRangeLabel;
+  const opTitle = "Operadores " + dateRangeLabel;
+
   if (rango === "7d") {
-    entregadosLabel = "Entregados (Últimos 7 días)";
-    distTitle = "Estados (Últimos 7 días)";
-    opTitle = "Operadores (Últimos 7 días)";
     volTitle = "Volumen Semanal";
   } else if (rango === "mes_actual") {
-    entregadosLabel = "Entregados (Este mes)";
-    distTitle = "Estados (Este mes)";
-    opTitle = "Operadores (Este mes)";
     volTitle = "Volumen Mensual";
   } else if (rango === "all") {
-    entregadosLabel = "Entregados (Histórico)";
-    distTitle = "Estados (Histórico)";
-    opTitle = "Operadores (Histórico)";
     volTitle = "Volumen Histórico";
   }
 
