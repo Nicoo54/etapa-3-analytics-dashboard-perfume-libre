@@ -97,41 +97,41 @@ export async function getRevenueData(rango: string = "30d") {
     switch (rango) {
       case "7d":
         return [
-          { nombre: "Lun", revenue: 4500 },
-          { nombre: "Mar", revenue: 5200 },
-          { nombre: "Mié", revenue: 3800 },
-          { nombre: "Jue", revenue: 6100 },
-          { nombre: "Vie", revenue: 7500 },
-          { nombre: "Sáb", revenue: 8200 },
-          { nombre: "Dom", revenue: 6900 },
+          { fecha: "Lun", revenue: 4500 },
+          { fecha: "Mar", revenue: 5200 },
+          { fecha: "Mié", revenue: 3800 },
+          { fecha: "Jue", revenue: 6100 },
+          { fecha: "Vie", revenue: 7500 },
+          { fecha: "Sáb", revenue: 8200 },
+          { fecha: "Dom", revenue: 6900 },
         ];
 
       case "mes_actual":
         return [
-          { nombre: "Semana 1", revenue: 12000 },
-          { nombre: "Semana 2", revenue: 15500 },
-          { nombre: "Semana 3", revenue: 14200 },
-          { nombre: "Semana 4", revenue: 18000 },
+          { fecha: "Semana 1", revenue: 12000 },
+          { fecha: "Semana 2", revenue: 15500 },
+          { fecha: "Semana 3", revenue: 14200 },
+          { fecha: "Semana 4", revenue: 18000 },
         ];
 
       case "all":
         return [
-          { nombre: "Ene", revenue: 45000 },
-          { nombre: "Feb", revenue: 52000 },
-          { nombre: "Mar", revenue: 48000 },
-          { nombre: "Abr", revenue: 61000 },
-          { nombre: "May", revenue: 59000 },
-          { nombre: "Jun", revenue: 75000 },
+          { fecha: "Ene", revenue: 45000 },
+          { fecha: "Feb", revenue: 52000 },
+          { fecha: "Mar", revenue: 48000 },
+          { fecha: "Abr", revenue: 61000 },
+          { fecha: "May", revenue: 59000 },
+          { fecha: "Jun", revenue: 75000 },
         ];
 
       case "30d":
       default:
         return [
-          { nombre: "01-07", revenue: 18000 },
-          { nombre: "08-14", revenue: 21500 },
-          { nombre: "15-21", revenue: 19800 },
-          { nombre: "22-28", revenue: 24200 },
-          { nombre: "29-30", revenue: 8100 },
+          { fecha: "01-07", revenue: 18000 },
+          { fecha: "08-14", revenue: 21500 },
+          { fecha: "15-21", revenue: 19800 },
+          { fecha: "22-28", revenue: 24200 },
+          { fecha: "29-30", revenue: 8100 },
         ];
     }
   }

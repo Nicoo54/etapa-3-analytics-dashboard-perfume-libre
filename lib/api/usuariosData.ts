@@ -3,31 +3,33 @@ export async function getUsuariosKPIs(rango: string = "30d") {
 
   if (!useRealApi) {
     await new Promise((resolve) => setTimeout(resolve, 500));
+    const totalUsuarios: number = 1500;
+    const compradoresRecurrentes: number = 340;
     switch (rango) {
       case "7d":
         return {
-          totalUsuarios: 1250,
+          totalUsuarios: totalUsuarios,
           nuevosEsteMes: 25,
-          compradoresRecurrentes: 310,
+          compradoresRecurrentes: compradoresRecurrentes,
         };
       case "mes_actual":
         return {
-          totalUsuarios: 1250,
+          totalUsuarios: totalUsuarios,
           nuevosEsteMes: 85,
-          compradoresRecurrentes: 340,
+          compradoresRecurrentes: compradoresRecurrentes,
         };
       case "all":
         return {
-          totalUsuarios: 1500,
+          totalUsuarios: totalUsuarios,
           nuevosEsteMes: 120,
-          compradoresRecurrentes: 340,
+          compradoresRecurrentes: compradoresRecurrentes,
         };
       case "30d":
       default:
         return {
-          totalUsuarios: 1250,
+          totalUsuarios: totalUsuarios,
           nuevosEsteMes: 92,
-          compradoresRecurrentes: 340,
+          compradoresRecurrentes: compradoresRecurrentes,
         };
     }
   }
