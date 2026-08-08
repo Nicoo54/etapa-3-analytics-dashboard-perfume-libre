@@ -1,4 +1,4 @@
-# Contratos de API - Analytics Plane
+# Contratos de API - Analytics dashboard
 
 Este documento define los endpoints que el **Analytics dashboard** necesita consumir de cada una de las aplicaciones individuales (Buyer, Seller, Shipping, Feedback) para funcionar correctamente.
 
@@ -48,6 +48,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/usuarios/activos`  
 **Descripción:** Devuelve la cantidad de usuarios activos en el rango seleccionado (tienen una compra en ese rango) junto a la tendencia
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -83,6 +84,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/ordenes/serie-temporal`  
 **Descripción:** agrupados por períodos de tiempo para graficar la evolución. El nivel de agrupación debe ajustarse dinámicamente según el rango solicitado para no saturar el gráfico.
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -118,14 +120,12 @@ _Ninguno._
 ]
 ```
 
-> [!NOTE]
-> Si el rango es "all", los campos de tendencia deben venir como null
-
 ### 1.4 Obtener cantidad de ordenes en cada estado
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/ordenes/por-estado`  
 **Descripción:** Devuelve la cantidad de ordenes en cada estado en el periodo elegido
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -152,14 +152,12 @@ _Ninguno._
 ]
 ```
 
-> [!NOTE]
-> Ajustar estado a los estados reales
-
 ### 1.5 Obtener informacion de transacciones
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/transacciones/kpis`  
 **Descripción:** Devuelve el promedio de gasto, cant de ordenes canceladas y tasa de conversion en el periodo elegido
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -187,6 +185,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/revenue-acumulado`  
 **Descripción:** Devuelve el revenue acumulado en el periodo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -221,6 +220,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/ordenes-por-dia`  
 **Descripción:** Devuelve la cantidad de ordenes diarias en el periodo de tiempo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -255,7 +255,8 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `api/admin/ordenes/ultimas`  
-**Descripción:** Devuelve las ultimas ordenes en el periodo de tiempo seleccionado
+**Descripción:** Devuelve las ultimas ordenes
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -265,14 +266,7 @@ _Ninguno._
 
 **Parámetros de Consulta (Query Params):**
 
-- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `20` por defecto.
-
-- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
-  - **Valores válidos:**
-    - `"7d"`: Últimos 7 días.
-    - `"30d"`: Últimos 30 días.
-    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
-    - `"all"`: Histórico completo de la plataforma.
+- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `10` por defecto.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -306,7 +300,8 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/usuarios/kpis`  
-**Descripción:** Devuelve el total de usuarios, los usuarios nuevos y los compradores recurrentes
+**Descripción:** Devuelve el total de usuarios, los usuarios nuevos y los compradores recurrentes en el rango seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -314,26 +309,36 @@ _Ninguno._
 **Body Requerido (Request):**
 _Ninguno._
 
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
+
 **Ejemplo de respuesta Exitosa (200 OK):**
 
 ```json
 [
   {
     "totalUsuarios": 1250,
-    "nuevosEsteMes": 85,
+    "nuevosUsuarios": 85,
     "compradoresRecurrentes": 340
   }
 ]
 ```
 
 > [!NOTE]
-> los usuarios los obtenemos de clerk y compradores recurrentes serian aquellos con mas de 1 orden y una compra en el ultimo mes
+> los usuarios los obtenemos de clerk y compradores recurrentes serian aquellos con al menos una 1 orden y una compra en el periodo seleccionado
 
 ### 1.10 Obtener cantidad de compradores
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/usuarios/roles`  
 **Descripción:** Devuelve la cantidad de compradores en el periodo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -368,6 +373,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/usuarios/top-compradores`  
 **Descripción:** Devuelve los top compradores globales
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -414,6 +420,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/productos/kpis`  
 **Descripción:** Devuelve el total de productos y en que estado esta cada uno
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -432,6 +439,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/productos/top`  
 **Descripción:** Devuelve informacion de los ultimos productos mas vendidos en el periodo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -483,6 +491,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/productos/categorias`  
 **Descripción:** Devuelve informacion de las categorias mas usadas o vendidas en el periodo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -514,12 +523,17 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/productos/ultimos`  
 **Descripción:** Devuelve informacion de las ultimos productos publicados por los vendedores
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `10` por defecto.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -549,6 +563,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/usuarios/roles`  
 **Descripción:** Devuelve la cantidad de compradores y vendedores agrupado por fecha segun el rango
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -585,6 +600,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/kpis`  
 **Descripción:** Devuelve el resumen operativo: envíos en tránsito, entregas realizadas y tiempo promedio de entrega en el rango de fechas seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -621,6 +637,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/estados`  
 **Descripción:** Devuelve la cantidad de envíos según su estado logístico en el periodo de tiempo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -655,6 +672,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/operadores`  
 **Descripción:** Devuelve el volumen de envíos segmentado por cada operador logístico en el rango seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -683,14 +701,12 @@ _Ninguno._
 ]
 ```
 
-> [!NOTE]
-> Ajustar a los operadores reales que se guardar en la app
-
 ### 3.4 Obtener Volumen de Envíos
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/volumen-diario`  
 **Descripción:** Devuelve la cantidad de envíos despachados durante el periodo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -752,7 +768,7 @@ _Ninguno._
 ```json
 [
   {
-    "promedioGlobal": 4.2,
+    "promedioResenas": 4.2,
     "totalResenas": 1845,
     "reportesPendientes": 12
   }
@@ -767,6 +783,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/calificaciones/distribucion`  
 **Descripción:** Devuelve la cantidad de reseñas agrupadas por estrellas (1 a 5). En el tiempo seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
@@ -835,6 +852,7 @@ _Ninguno._
 **Método:** `GET`  
 **Ruta:** `/api/admin/vendedores/riesgo`  
 **Descripción:** Devuelve una lista de vendedores con promedio bajo, filtrados por un umbral (debajo de 3)
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
