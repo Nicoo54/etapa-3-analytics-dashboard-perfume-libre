@@ -20,11 +20,17 @@ const chartConfig = {
   usuarios: { label: "Usuarios Totales", color: "var(--primary)" },
 };
 
-export function UserGrowthChart({ data }: { data: any[] }) {
+export function UserGrowthChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-1 lg:col-span-2">
       <CardHeader>
-        <CardTitle>Crecimiento de Usuarios</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">

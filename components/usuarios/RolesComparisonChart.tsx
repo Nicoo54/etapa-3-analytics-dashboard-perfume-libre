@@ -20,11 +20,17 @@ const chartConfig = {
   vendedores: { label: "Vendedores", color: "var(--chart-1)" },
 };
 
-export function RolesComparisonChart({ data }: { data: any[] }) {
+export function RolesComparisonChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Actividad por Rol</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">
