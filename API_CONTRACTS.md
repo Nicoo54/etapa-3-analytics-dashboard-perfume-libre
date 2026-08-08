@@ -11,6 +11,7 @@ Este documento define los endpoints que el **Analytics dashboard** necesita cons
 **Método:** `GET`  
 **Ruta:** `/api/admin/ordenes/metricas`  
 **Descripción:** Devuelve el total de ordenes con el revenueTotal junto a la tendencia en el rango seleccionado
+
 **Headers Requeridos:**
 
 - `api-key`: `[key]`
