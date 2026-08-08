@@ -154,7 +154,7 @@ export async function getOrdenesPorDiaData(rango: string = "30d") {
   }
 }
 
-export async function getUltimasOrdenes(rango: string = "30d") {
+export async function getUltimasOrdenes() {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
@@ -196,14 +196,12 @@ export async function getUltimasOrdenes(rango: string = "30d") {
       },
     ];
 
-    if (rango === "7d") return ordenesMock.slice(0, 3);
-
     return ordenesMock;
   }
 
   try {
     const res = await fetch(
-      `https://buyer-app.vercel.app/api/admin/ordenes/ultimas?limit=20&rango=${rango}`,
+      `https://buyer-app.vercel.app/api/admin/ordenes/ultimas?limit=20`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();

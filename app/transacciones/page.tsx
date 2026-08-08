@@ -23,7 +23,7 @@ export default async function TransaccionesPage({
       getTransaccionesKPIs(rango),
       getRevenueAcumuladoData(rango),
       getOrdenesPorDiaData(rango),
-      getUltimasOrdenes(rango),
+      getUltimasOrdenes(),
     ],
   );
 

@@ -4,32 +4,31 @@ export async function getUsuariosKPIs(rango: string = "30d") {
   if (!useRealApi) {
     await new Promise((resolve) => setTimeout(resolve, 500));
     const totalUsuarios: number = 1500;
-    const compradoresRecurrentes: number = 340;
     switch (rango) {
       case "7d":
         return {
           totalUsuarios: totalUsuarios,
-          nuevosEsteMes: 25,
-          compradoresRecurrentes: compradoresRecurrentes,
+          nuevosUsuarios: 25,
+          compradoresRecurrentes: 120,
         };
       case "mes_actual":
         return {
           totalUsuarios: totalUsuarios,
-          nuevosEsteMes: 85,
-          compradoresRecurrentes: compradoresRecurrentes,
+          nuevosUsuarios: 85,
+          compradoresRecurrentes: 274,
         };
       case "all":
         return {
           totalUsuarios: totalUsuarios,
-          nuevosEsteMes: 120,
-          compradoresRecurrentes: compradoresRecurrentes,
+          nuevosUsuarios: 120,
+          compradoresRecurrentes: 520,
         };
       case "30d":
       default:
         return {
           totalUsuarios: totalUsuarios,
-          nuevosEsteMes: 92,
-          compradoresRecurrentes: compradoresRecurrentes,
+          nuevosUsuarios: 92,
+          compradoresRecurrentes: 340,
         };
     }
   }
@@ -42,7 +41,7 @@ export async function getUsuariosKPIs(rango: string = "30d") {
     return await res.json();
   } catch (error) {
     console.error("Error obteniendo KPIs de usuarios:", error);
-    return { totalUsuarios: 0, nuevosEsteMes: 0, compradoresRecurrentes: 0 };
+    return { totalUsuarios: 0, nuevosUsuarios: 0, compradoresRecurrentes: 0 };
   }
 }
 
@@ -156,7 +155,7 @@ export async function getCompradoresVsVendedoresData(rango: string = "30d") {
   }
 }
 
-export async function getTopCompradores(rango: string = "30d") {
+export async function getTopCompradores() {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
@@ -198,20 +197,12 @@ export async function getTopCompradores(rango: string = "30d") {
       },
     ];
 
-    if (rango === "7d") {
-      return baseMock.map((u) => ({
-        ...u,
-        ordenes: Math.max(1, Math.floor(u.ordenes / 4)),
-        gastado: Math.floor(u.gastado / 4),
-      }));
-    }
-
     return baseMock;
   }
 
   try {
     const res = await fetch(
-      `https://buyer-app.vercel.app/api/admin/metricas/usuarios/top-compradores?limit=10&rango=${rango}`,
+      `https://buyer-app.vercel.app/api/admin/metricas/usuarios/top-compradores?limit=10`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();

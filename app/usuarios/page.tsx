@@ -22,7 +22,7 @@ export default async function UsuariosPage({
     getUsuariosKPIs(rango),
     getCrecimientoUsuariosData(rango),
     getCompradoresVsVendedoresData(rango),
-    getTopCompradores(rango),
+    getTopCompradores(),
   ]);
 
   return (
@@ -42,7 +42,7 @@ export default async function UsuariosPage({
         />
         <MetricCard
           title="Nuevos este mes"
-          value={kpis.nuevosEsteMes}
+          value={kpis.nuevosUsuarios}
           prefix="+"
           icon={<UserPlus className="w-4 h-4" />}
         />

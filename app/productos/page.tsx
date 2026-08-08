@@ -22,7 +22,7 @@ export default async function ProductosPage({
     getProductosKPIs(),
     getTopProductos(rango),
     getDistribucionCategorias(rango),
-    getUltimosProductos(rango),
+    getUltimosProductos(),
   ]);
 
   return (

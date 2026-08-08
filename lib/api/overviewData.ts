@@ -24,14 +24,14 @@ export async function getOverviewMetricas(
           totalOrdenes: { valor: 320, tendencia: 5.2 },
           revenueTotal: { valor: 12500, tendencia: -2.1 },
           usuariosActivos: { valor: 85, tendencia: 12.0 },
-          calificacionPromedio: 4.5,
+          calificacionPromedio: 4.6,
         };
       case "mes_actual":
         return {
           totalOrdenes: { valor: 850, tendencia: 15.4 },
           revenueTotal: { valor: 31000, tendencia: 8.9 },
           usuariosActivos: { valor: 210, tendencia: 5.5 },
-          calificacionPromedio: 4.4,
+          calificacionPromedio: 4.6,
         };
       case "all":
         return {
@@ -46,7 +46,7 @@ export async function getOverviewMetricas(
           totalOrdenes: { valor: 1248, tendencia: 12.5 },
           revenueTotal: { valor: 45200.5, tendencia: 20.1 },
           usuariosActivos: { valor: 342, tendencia: -3.4 },
-          calificacionPromedio: 4.3,
+          calificacionPromedio: 4.6,
         };
     }
   }

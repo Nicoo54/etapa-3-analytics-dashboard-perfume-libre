@@ -114,7 +114,7 @@ export async function getDistribucionCategorias(rango: string = "30d") {
   }
 }
 
-export async function getUltimosProductos(rango: string = "30d") {
+export async function getUltimosProductos() {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
@@ -156,14 +156,12 @@ export async function getUltimosProductos(rango: string = "30d") {
       },
     ];
 
-    if (rango === "7d") return baseMock.slice(0, 2);
-
     return baseMock;
   }
 
   try {
     const res = await fetch(
-      `https://seller-app.vercel.app/api/admin/productos/ultimos?limit=10&rango=${rango}`,
+      `https://seller-app.vercel.app/api/admin/productos/ultimos?limit=10`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();

@@ -129,7 +129,7 @@ export async function getEvolucionPromedio(rango: string = "30d") {
   }
 }
 
-export async function getVendedoresEnRiesgo(rango: string = "30d") {
+export async function getVendedoresEnRiesgo() {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
@@ -149,24 +149,12 @@ export async function getVendedoresEnRiesgo(rango: string = "30d") {
       },
     ];
 
-    if (rango === "7d") {
-      return [
-        {
-          id: "VEND-305",
-          nombre: "Importador Directo",
-          promedio: 1.5,
-          resenas: 12,
-        },
-        ...baseMock.slice(0, 1),
-      ];
-    }
-
     return baseMock;
   }
 
   try {
     const res = await fetch(
-      `https://seller-app.vercel.app/api/admin/vendedores/riesgo?rango=${rango}`,
+      `https://seller-app.vercel.app/api/admin/vendedores/riesgo`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();

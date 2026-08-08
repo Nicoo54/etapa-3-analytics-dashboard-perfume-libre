@@ -23,7 +23,7 @@ export default async function CalificacionesPage({
       getCalificacionesKPIs(rango),
       getDistribucionCalificaciones(rango),
       getEvolucionPromedio(rango),
-      getVendedoresEnRiesgo(rango),
+      getVendedoresEnRiesgo(),
     ],
   );
 
