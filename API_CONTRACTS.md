@@ -1,4 +1,4 @@
-# Contratos de API - Control Plane
+# Contratos de API - Analytics Plane
 
 Este documento define los endpoints que el **Analytics dashboard** necesita consumir de cada una de las aplicaciones individuales (Buyer, Seller, Shipping, Feedback) para funcionar correctamente.
 
@@ -10,84 +10,137 @@ Este documento define los endpoints que el **Analytics dashboard** necesita cons
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/ordenes/metricas`  
-**Descripción:** Devuelve el total de ordenes con el revenueTotal
+**Descripción:** Devuelve el total de ordenes con el revenueTotal junto a la tendencia en el rango seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
 ```json
 [
   {
-    "totalOrdenes": 1248,
-    "revenueTotal": 45200.5
+    "total": 320,
+    "tendencia": 5.2,
+    "revenue": 12500.5,
+    "tendenciaRevenue": -2.1
   }
 ]
 ```
+
+> [!NOTE]
+> Si el rango es "all", los campos de tendencia deben venir como null
 
 ### 1.2 Obtener usuarios activos
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/usuarios/activos`  
-**Descripción:** Devuelve la cantidad de usuarios activos (tienen una compra en los ultimos x dias)
+**Descripción:** Devuelve la cantidad de usuarios activos en el rango seleccionado (tienen una compra en ese rango) junto a la tendencia
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
 ```json
 [
   {
-    "usuariosActivos": 342
+    "usuariosActivos": 342,
+    "tendencia": 5.5
   }
 ]
 ```
 
-### 1.3 Obtener revenue diario
+> [!NOTE]
+> Si el rango es "all", los campos de tendencia deben venir como null
+
+### 1.3 Obtener Evolución de Ingresos
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/ordenes/serie-temporal`  
-**Descripción:** Devuelve los ingresos diarios para el reporte de tendencia semanal
+**Descripción:** agrupados por períodos de tiempo para graficar la evolución. El nivel de agrupación debe ajustarse dinámicamente según el rango solicitado para no saturar el gráfico.
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
 
-**Ejemplo de respuesta Exitosa (200 OK):**
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días. Agrupado por día de la semana (Ej: "Lun", "Mar").
+    - `"30d"`: Últimos 30 días. Agrupado por bloques de fechas (Ej: "01-07", "08-14")
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual. Desde el día 1 del mes hasta hoy. Agrupado por semanas (Ej: "Semana 1", "Semana 2").
+    - `"all"`: Histórico completo de la plataforma. Agrupado por meses (Ej: "Ene", "Feb").
+
+**Ejemplo de respuesta Exitosa (200 OK) si el cliente envía `?rango=7d`:**
 
 ```json
 [
-  { "nombre": "Lun", "revenue": 4500 },
-  { "nombre": "Mar", "revenue": 5200 },
-  { "nombre": "Mié", "revenue": 3800 },
-  { "nombre": "Jue", "revenue": 6100 },
-  { "nombre": "Vie", "revenue": 7500 },
-  { "nombre": "Sáb", "revenue": 8200 },
-  { "nombre": "Dom", "revenue": 6900 }
+  {
+    "fecha": "Lun",
+    "revenue": 4500.0
+  },
+  {
+    "fecha": "Mar",
+    "revenue": 5200.5
+  },
+  {
+    "fecha": "Mié",
+    "revenue": 3800.0
+  }
 ]
 ```
+
+> [!NOTE]
+> Si el rango es "all", los campos de tendencia deben venir como null
 
 ### 1.4 Obtener cantidad de ordenes en cada estado
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/ordenes/serie-temporal`  
-**Descripción:** Devuelve la cantidad de ordenes en cada estado
+**Ruta:** `/api/admin/metricas/ordenes/por-estado`  
+**Descripción:** Devuelve la cantidad de ordenes en cada estado en el periodo elegido
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -106,13 +159,22 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/transacciones/kpis`  
-**Descripción:** Devuelve el promedio de gasto, cant de ordenes canceladas y tasa de conversion
+**Descripción:** Devuelve el promedio de gasto, cant de ordenes canceladas y tasa de conversion en el periodo elegido
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -120,22 +182,28 @@ _Ninguno._
 [{ "ticketPromedio": 12500, "tasaConversion": 3.2, "ordenesCanceladas": 14 }]
 ```
 
-> [!NOTE]
-> Ver si se puede calcular tasa de conversion
-
 ### 1.6 Obtener acumulacion de revenue por fecha
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/ordenes/serie-temporal`  
-**Descripción:** Devuelve el revenue acumulado cada x tiempo
+**Ruta:** `/api/admin/metricas/revenue-acumulado`  
+**Descripción:** Devuelve el revenue acumulado en el periodo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
 
-**Ejemplo de respuesta Exitosa (200 OK):**
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días. Agrupado por día de la semana (Ej: "Lun", "Mar").
+    - `"30d"`: Últimos 30 días. Agrupado por bloques de fechas (Ej: "01-07", "08-14")
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual. Desde el día 1 del mes hasta hoy. Agrupado por semanas (Ej: "Semana 1", "Semana 2").
+    - `"all"`: Histórico completo de la plataforma. Agrupado por meses (Ej: "Ene", "Feb").
+
+**Ejemplo de respuesta Exitosa (200 OK) si el cliente envía `?rango=30d`:**
 
 ```json
 [
@@ -152,15 +220,24 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/ordenes-por-dia`  
-**Descripción:** Devuelve la cantidad de ordenes diarias en la semana
+**Descripción:** Devuelve la cantidad de ordenes diarias en el periodo de tiempo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
 
-**Ejemplo de respuesta Exitosa (200 OK):**
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días. Agrupado por día de la semana (Ej: "Lun", "Mar").
+    - `"30d"`: Últimos 30 días. Agrupado por bloques de fechas (Ej: "01-07", "08-14")
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual. Desde el día 1 del mes hasta hoy. Agrupado por semanas (Ej: "Semana 1", "Semana 2").
+    - `"all"`: Histórico completo de la plataforma. Agrupado por meses (Ej: "Ene", "Feb").
+
+**Ejemplo de respuesta Exitosa (200 OK) si el cliente envía `?rango=7d`:**
 
 ```json
 [
@@ -177,14 +254,25 @@ _Ninguno._
 ### 1.8 Obtener ultimas ordenes creadas
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/ordenes/ultimas?limit=20`  
-**Descripción:** Devuelve las ultimas x ordenes
+**Ruta:** `api/admin/ordenes/ultimas`  
+**Descripción:** Devuelve las ultimas ordenes en el periodo de tiempo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `20` por defecto.
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -217,11 +305,11 @@ _Ninguno._
 ### 1.9 Obtener informacion de usuarios
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/ordenes/ultimas?limit=20`  
+**Ruta:** `/api/admin/metricas/usuarios/kpis`  
 **Descripción:** Devuelve el total de usuarios, los usuarios nuevos y los compradores recurrentes
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
@@ -245,15 +333,24 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/usuarios/roles`  
-**Descripción:** Devuelve la cantidad de compradores por mes
+**Descripción:** Devuelve la cantidad de compradores en el periodo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
 
-**Ejemplo de respuesta Exitosa (200 OK):**
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días. Agrupado por día de la semana (Ej: "Lun", "Mar").
+    - `"30d"`: Últimos 30 días. Agrupado por bloques de fechas (Ej: "01-07", "08-14")
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual. Desde el día 1 del mes hasta hoy. Agrupado por semanas (Ej: "Semana 1", "Semana 2").
+    - `"all"`: Histórico completo de la plataforma. Agrupado por meses (Ej: "Ene", "Feb").
+
+**Ejemplo de respuesta Exitosa (200 OK) si el rango es `?rango=all`:**
 
 ```json
 [
@@ -269,14 +366,18 @@ _Ninguno._
 ### 1.11 Obtener top compradores
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/metricas/usuarios/top-compradores?limit=10`  
+**Ruta:** `/api/admin/metricas/usuarios/top-compradores`  
 **Descripción:** Devuelve los top compradores globales
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `20` por defecto.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -311,11 +412,11 @@ _Ninguno._
 ### 2.1 Obtener detalles de productos
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/ordenes/metricas`  
+**Ruta:** `/api/admin/metricas/productos/kpis`  
 **Descripción:** Devuelve el total de productos y en que estado esta cada uno
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
@@ -330,13 +431,24 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/productos/top`  
-**Descripción:** Devuelve informacion de los ultimos x productos mas vendidos
+**Descripción:** Devuelve informacion de los ultimos productos mas vendidos en el periodo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `10` por defecto.
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -366,20 +478,26 @@ _Ninguno._
 ]
 ```
 
-> [!NOTE]
-> Si no se guarda esta informacion delegar a buyer
-
 ### 2.3 Obtener categorias mas publicadas
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/productos/categorias`  
-**Descripción:** Devuelve informacion de las categorias mas usadas o vendidas
+**Descripción:** Devuelve informacion de las categorias mas usadas o vendidas en el periodo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -391,17 +509,14 @@ _Ninguno._
 ]
 ```
 
-> [!NOTE]
-> Si no se guarda informacion de ventas mandar las mas usadas.
-
 ### 2.4 Obtener ultimos productos publicados
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/metricas/productos/categorias`  
+**Ruta:** `/api/admin/productos/ultimos`  
 **Descripción:** Devuelve informacion de las ultimos productos publicados por los vendedores
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
@@ -429,19 +544,28 @@ _Ninguno._
 ]
 ```
 
-### 2.5 Obtener cantidad de vendedores
+### 2.5 Obtener evolucion de usuarios por rol
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/usuarios/roles`  
-**Descripción:** Devuelve la cantidad de vendedores por mes
+**Descripción:** Devuelve la cantidad de compradores y vendedores agrupado por fecha segun el rango
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
 
-**Ejemplo de respuesta Exitosa (200 OK):**
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días. Agrupado por día de la semana (Ej: "Lun", "Mar").
+    - `"30d"`: Últimos 30 días. Agrupado por bloques de fechas (Ej: "01-07", "08-14")
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual. Desde el día 1 del mes hasta hoy. Agrupado por semanas (Ej: "Semana 1", "Semana 2").
+    - `"all"`: Histórico completo de la plataforma. Agrupado por meses (Ej: "Ene", "Feb").
+
+**Ejemplo de respuesta Exitosa (200 OK) si el rango es `?rango=all`:**
 
 ```json
 [
@@ -460,13 +584,22 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/kpis`  
-**Descripción:** Devuelve el resumen operativo: envíos en tránsito, entregas realizadas hoy y tiempo promedio de entrega
+**Descripción:** Devuelve el resumen operativo: envíos en tránsito, entregas realizadas y tiempo promedio de entrega en el rango de fechas seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -487,13 +620,22 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/estados`  
-**Descripción:** Devuelve la cantidad de envíos según su estado logístico actual
+**Descripción:** Devuelve la cantidad de envíos según su estado logístico en el periodo de tiempo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -508,20 +650,26 @@ _Ninguno._
 ]
 ```
 
-> [!NOTE]
-> Ajustar a los estados reales que se guardar en la app
-
 ### 3.3 Obtener Envíos por Operador
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/operadores`  
-**Descripción:** Devuelve el volumen de envíos segmentado por cada operador logístico.
+**Descripción:** Devuelve el volumen de envíos segmentado por cada operador logístico en el rango seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -538,19 +686,28 @@ _Ninguno._
 > [!NOTE]
 > Ajustar a los operadores reales que se guardar en la app
 
-### 3.4 Obtener Volumen Diario de Envíos
+### 3.4 Obtener Volumen de Envíos
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/volumen-diario`  
-**Descripción:** Devuelve la cantidad de envíos despachados durante los días de la semana
+**Descripción:** Devuelve la cantidad de envíos despachados durante el periodo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
 
-**Ejemplo de respuesta Exitosa (200 OK):**
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días. Agrupado por día de la semana (Ej: "Lun", "Mar").
+    - `"30d"`: Últimos 30 días. Agrupado por bloques de fechas (Ej: "01-07", "08-14")
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual. Desde el día 1 del mes hasta hoy. Agrupado por semanas (Ej: "Semana 1", "Semana 2").
+    - `"all"`: Histórico completo de la plataforma. Agrupado por meses (Ej: "Ene", "Feb").
+
+**Ejemplo de respuesta Exitosa (200 OK) si el rango es `?rango=all`:**
 
 ```json
 [
@@ -572,14 +729,23 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/calificaciones/kpis`  
-**Descripción:** Devuelve el promedio global, total de reseñas y reportes pendientes
+**Descripción:** Devuelve el promedio global, total de reseñas y reportes pendientes en el periodo de tiempo seleccionado
 
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -593,19 +759,31 @@ _Ninguno._
 ]
 ```
 
+> [!NOTE]
+> Los reportes pendientes seran los mismos independientemente del rango seleccionado
+
 ### 4.2 Obtener Distribución de Calificaciones
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/calificaciones/distribucion`  
-**Descripción:** Devuelve la cantidad de reseñas agrupadas por estrellas (1 a 5).
+**Descripción:** Devuelve la cantidad de reseñas agrupadas por estrellas (1 a 5). En el tiempo seleccionado
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
 
-**Escenario 1: El usuario es un vendedor (200 OK):**
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
+
+**Ejemplo de respuesta Exitosa (200 OK):**
 
 ```json
 [
@@ -621,14 +799,23 @@ _Ninguno._
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/calificaciones/evolucion`  
-**Descripción:** Devuelve el promedio de calificaciones histórico mes a mes
+**Descripción:** Devuelve el promedio de calificaciones histórico agrupado segun el rango seleccionado
 
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
+
+**Parámetros de Consulta (Query Params):**
+
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días. Agrupado por día de la semana (Ej: "Lun", "Mar").
+    - `"30d"`: Últimos 30 días. Agrupado por bloques de fechas (Ej: "01-07", "08-14")
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual. Desde el día 1 del mes hasta hoy. Agrupado por semanas (Ej: "Semana 1", "Semana 2").
+    - `"all"`: Histórico completo de la plataforma. Agrupado por meses (Ej: "Ene", "Feb").
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -646,18 +833,18 @@ _Ninguno._
 ### 4.4 Obtener Vendedores en Riesgo
 
 **Método:** `GET`  
-**Ruta:** `/api/admin/metricas/vendedores/riesgo`  
-**Descripción:** ObtienDevuelve una lista de vendedores con promedio bajo, filtrados por un umbral (puede ser menor a 3 o 2 por ej)
+**Ruta:** `/api/admin/vendedores/riesgo`  
+**Descripción:** Devuelve una lista de vendedores con promedio bajo, filtrados por un umbral (debajo de 3)
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
-El cuerpo de la petición podria aceptar un valor numérico para definir el límite de promedio como por ej:
+_Ninguno._
 
-```json
-[{ "umbral": 3.0 }]
-```
+**Parámetros de Consulta (Query Params):**
+
+- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `10` por defecto.
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
@@ -692,7 +879,7 @@ El cuerpo de la petición podria aceptar un valor numérico para definir el lím
 
 **Headers Requeridos:**
 
-- `api-key`: `[key]` (definir key)
+- `api-key`: `[key]`
 
 **Body Requerido (Request):**
 _Ninguno._
