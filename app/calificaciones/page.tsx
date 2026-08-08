@@ -9,6 +9,7 @@ import { RatingEvolutionChart } from "@/components/calificaciones/RatingEvolutio
 import { SellersAtRiskTable } from "@/components/calificaciones/SellersAtRiskTable";
 import { Flag, MessageSquare, Star, Trophy } from "lucide-react";
 import { MetricCard } from "@/components/MetricCard";
+import { getDateRangeLabel } from "@/lib/utils";
 
 export default async function CalificacionesPage({
   searchParams,
@@ -29,6 +30,11 @@ export default async function CalificacionesPage({
 
   let distTitle = "Distribución de Calificaciones";
   let evoTitle = "Evolución del Promedio";
+
+  const labelRango = getDateRangeLabel(rango);
+
+  const labelPromedio = `Promedio de calificaciones ${labelRango}`;
+  const labelTotalResenas = `Total de reseñas ${labelRango}`;
 
   if (rango === "7d") {
     distTitle = "Distribución (Últimos 7 días)";
@@ -53,13 +59,13 @@ export default async function CalificacionesPage({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MetricCard
-          title="Promedio"
+          title={labelPromedio}
           value={kpis.promedioResenas.toFixed(1)}
           suffix={<Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />}
           icon={<Trophy className="w-4 h-4" />}
         />
         <MetricCard
-          title="Total de Reseñas"
+          title={labelTotalResenas}
           value={kpis.totalResenas.toLocaleString("es-AR")}
           icon={<MessageSquare className="w-4 h-4" />}
         />
