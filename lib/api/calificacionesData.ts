@@ -8,14 +8,18 @@ export async function getCalificacionesKPIs(rango: string = "30d") {
 
     switch (rango) {
       case "7d":
-        return { promedioGlobal: 3.8, totalResenas: 145, reportesPendientes };
+        return { promedioResenas: 3.8, totalResenas: 145, reportesPendientes };
       case "mes_actual":
-        return { promedioGlobal: 4.1, totalResenas: 680, reportesPendientes };
+        return { promedioResenas: 4.1, totalResenas: 680, reportesPendientes };
       case "all":
-        return { promedioGlobal: 4.6, totalResenas: 15400, reportesPendientes };
+        return {
+          promedioResenas: 4.6,
+          totalResenas: 15400,
+          reportesPendientes,
+        };
       case "30d":
       default:
-        return { promedioGlobal: 4.2, totalResenas: 1845, reportesPendientes };
+        return { promedioResenas: 4.2, totalResenas: 1845, reportesPendientes };
     }
   }
 
@@ -26,7 +30,7 @@ export async function getCalificacionesKPIs(rango: string = "30d") {
     if (!res.ok) throw new Error("API error");
     return await res.json();
   } catch (error) {
-    return { promedioGlobal: 0, totalResenas: 0, reportesPendientes: 0 };
+    return { promedioResenas: 0, totalResenas: 0, reportesPendientes: 0 };
   }
 }
 

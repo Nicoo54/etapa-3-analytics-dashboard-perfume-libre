@@ -54,7 +54,7 @@ export default async function CalificacionesPage({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MetricCard
           title="Promedio"
-          value={kpis.promedioGlobal.toFixed(1)}
+          value={kpis.promedioResenas.toFixed(1)}
           suffix={<Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />}
           icon={<Trophy className="w-4 h-4" />}
         />
