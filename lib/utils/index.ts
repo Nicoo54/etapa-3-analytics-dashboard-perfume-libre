@@ -5,6 +5,7 @@ import { exportUsuarios } from "./usuariosExport";
 import { exportProductos } from "./productosExport";
 import { exportEnvios } from "./enviosExport";
 import { exportCalificaciones } from "./calificacionesExport";
+import { exportAll } from "./exportacionGlobal";
 
 export const downloadWorkbook = (
   wb: XLSX.WorkBook,
@@ -46,14 +47,7 @@ export async function exportCurrentPage(pathname: string, rango: string) {
 export async function exportAllPages(rango: string) {
   const wb = XLSX.utils.book_new();
 
-  await Promise.all([
-    exportGeneral(wb, rango),
-    exportTransacciones(wb, rango),
-    exportUsuarios(wb, rango),
-    exportProductos(wb, rango),
-    exportCalificaciones(wb, rango),
-    exportEnvios(wb, rango),
-  ]);
+  await exportAll(wb, rango);
 
   downloadWorkbook(wb, "Reporte_Ecosistema_Completo", rango);
 }
