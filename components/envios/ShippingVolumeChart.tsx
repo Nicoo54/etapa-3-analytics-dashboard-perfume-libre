@@ -59,7 +59,7 @@ export function ShippingVolumeChart({
                 stroke="#e5e7eb"
               />
               <XAxis
-                dataKey="dia"
+                dataKey="fecha"
                 stroke="#888888"
                 fontSize={12}
                 tickLine={false}

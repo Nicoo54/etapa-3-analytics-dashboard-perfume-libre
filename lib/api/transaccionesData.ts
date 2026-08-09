@@ -154,7 +154,10 @@ export async function getOrdenesPorDiaData(rango: string = "30d") {
   }
 }
 
-export async function getUltimasOrdenes() {
+export async function getUltimasOrdenes(
+  rango: string = "30d",
+  limit: number = 20,
+) {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
@@ -201,7 +204,7 @@ export async function getUltimasOrdenes() {
 
   try {
     const res = await fetch(
-      `https://buyer-app.vercel.app/api/admin/ordenes/ultimas?limit=20`,
+      `https://buyer-app.vercel.app/api/admin/ordenes/ultimas?limit=${limit}&rango=${rango}`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();

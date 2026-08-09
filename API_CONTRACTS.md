@@ -267,7 +267,15 @@ _Ninguno._
 
 **Parámetros de Consulta (Query Params):**
 
-- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver. Si no se envía, el backend debe asumir `10` por defecto.
+- `rango` _(opcional, string)_: Define el marco temporal para calcular las métricas. Si no se envía, el backend debe asumir `"30d"` por defecto.
+  - **Valores válidos:**
+    - `"7d"`: Últimos 7 días.
+    - `"30d"`: Últimos 30 días.
+    - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
+    - `"all"`: Histórico completo de la plataforma.
+- `limit` _(opcional, número)_: Cantidad máxima de registros a devolver.
+  - Si no se envía, el backend debe asumir `10` por defecto.
+  - Si se envía `-1`, el backend debe devolver **todos** los registros sin límite _(Nota: Usar con precaución en rangos muy amplios para evitar sobrecarga del servidor)._
 
 **Ejemplo de respuesta Exitosa (200 OK):**
 
