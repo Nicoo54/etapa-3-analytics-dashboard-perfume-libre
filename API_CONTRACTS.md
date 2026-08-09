@@ -305,11 +305,11 @@ _Ninguno._
 ]
 ```
 
-### 1.9 Obtener informacion de usuarios
+### 1.9 Obtener información de usuarios (KPIs)
 
 **Método:** `GET`  
 **Ruta:** `/api/admin/metricas/usuarios/kpis`  
-**Descripción:** Devuelve el total de usuarios, los usuarios nuevos y los compradores recurrentes en el rango seleccionado
+**Descripción:** Devuelve el total de usuarios registrados, los usuarios nuevos (o el LTV si se consulta el histórico) y los compradores recurrentes dentro del rango seleccionado.
 
 **Headers Requeridos:**
 
@@ -327,7 +327,9 @@ _Ninguno._
     - `"mes_actual"`: Desde el día 1 del mes en curso hasta la fecha actual.
     - `"all"`: Histórico completo de la plataforma.
 
-**Ejemplo de respuesta Exitosa (200 OK):**
+#### Ejemplos de Respuesta Exitosa (200 OK)
+
+**Caso A: Rangos acotados (`?rango=7d`, `30d`, `mes_actual`)**
 
 ```json
 [
@@ -339,8 +341,20 @@ _Ninguno._
 ]
 ```
 
+**Caso B: Rango histórico (`?rango=all`)**
+
+```json
+[
+  {
+    "totalUsuarios": 1250,
+    "ltv": 12500,
+    "compradoresRecurrentes": 340
+  }
+]
+```
+
 > [!NOTE]
-> los usuarios los obtenemos de clerk y compradores recurrentes serian aquellos con al menos una 1 orden y una compra en el periodo seleccionado
+> Los usuarios se obtienen desde Clerk. Los compradores recurrentes son aquellos usuarios que tienen al menos 2 órdenes finalizadas en su historial (con al menos una compra dentro del período seleccionado).
 
 ### 1.10 Obtener cantidad de compradores
 
