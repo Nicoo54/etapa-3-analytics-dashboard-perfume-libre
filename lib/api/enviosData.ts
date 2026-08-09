@@ -115,31 +115,31 @@ export async function getVolumenEnviosDia(rango: string = "30d") {
     switch (rango) {
       case "7d":
         return [
-          { dia: "Lun", despachados: 45 },
-          { dia: "Mar", despachados: 52 },
-          { dia: "Mié", despachados: 38 },
-          { dia: "Jue", despachados: 65 },
-          { dia: "Vie", despachados: 80 },
-          { dia: "Sáb", despachados: 20 },
-          { dia: "Dom", despachados: 5 },
+          { fecha: "Lun", despachados: 45 },
+          { fecha: "Mar", despachados: 52 },
+          { fecha: "Mié", despachados: 38 },
+          { fecha: "Jue", despachados: 65 },
+          { fecha: "Vie", despachados: 80 },
+          { fecha: "Sáb", despachados: 20 },
+          { fecha: "Dom", despachados: 5 },
         ];
       case "mes_actual":
         return [
-          { dia: "Sem 1", despachados: 180 },
-          { dia: "Sem 2", despachados: 210 },
-          { dia: "Sem 3", despachados: 195 },
-          { dia: "Sem 4", despachados: 240 },
+          { fecha: "Sem 1", despachados: 180 },
+          { fecha: "Sem 2", despachados: 210 },
+          { fecha: "Sem 3", despachados: 195 },
+          { fecha: "Sem 4", despachados: 240 },
         ];
       case "all":
       case "30d":
       default:
         return [
-          { dia: "Ene", despachados: 850 },
-          { dia: "Feb", despachados: 920 },
-          { dia: "Mar", despachados: 1100 },
-          { dia: "Abr", despachados: 1050 },
-          { dia: "May", despachados: 1300 },
-          { dia: "Jun", despachados: 1450 },
+          { fecha: "Ene", despachados: 850 },
+          { fecha: "Feb", despachados: 920 },
+          { fecha: "Mar", despachados: 1100 },
+          { fecha: "Abr", despachados: 1050 },
+          { fecha: "May", despachados: 1300 },
+          { fecha: "Jun", despachados: 1450 },
         ];
     }
   }

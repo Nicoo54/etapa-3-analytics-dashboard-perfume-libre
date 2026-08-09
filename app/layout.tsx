@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { DateRangeFilter } from "@/components/layout/DateRangeFilter";
+import { ExportButton } from "@/components/layout/ExportButton";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -39,9 +40,7 @@ export default function RootLayout({
               </h2>
               <div className="flex items-center space-x-4">
                 <DateRangeFilter />
-                <button className="bg-primary text-primary-foreground px-4 py-1.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
-                  Exportar
-                </button>
+                <ExportButton />
               </div>
             </header>
 
