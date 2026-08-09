@@ -21,7 +21,7 @@ export async function exportUsuarios(wb: XLSX.WorkBook, rango: string) {
       Valor: kpis.totalUsuarios,
     },
     {
-      Metrica: "Nuevos",
+      Metrica: "Nuevos usuarios",
       Valor: kpis.nuevosUsuarios,
     },
     {
@@ -41,7 +41,7 @@ export async function exportUsuarios(wb: XLSX.WorkBook, rango: string) {
   wsTopBuyers["!cols"] = autoFitColumns(topCompradores);
 
   XLSX.utils.book_append_sheet(wb, wsKpis, "Resumen KPI");
-  XLSX.utils.book_append_sheet(wb, wsGrowth, "Crecimiento");
-  XLSX.utils.book_append_sheet(wb, wsRol, "Roles");
+  XLSX.utils.book_append_sheet(wb, wsGrowth, "Crecimiento de usuarios");
+  XLSX.utils.book_append_sheet(wb, wsRol, "Compradores vs Vendedores");
   XLSX.utils.book_append_sheet(wb, wsTopBuyers, "Top Compradores");
 }

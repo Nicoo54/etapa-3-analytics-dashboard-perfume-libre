@@ -8,11 +8,11 @@ import {
 import { autoFitColumns } from "@/components/layout/ExportButton";
 
 export async function exportTransacciones(wb: XLSX.WorkBook, rango: string) {
-  const [kpis, revenue, ordenesDia, ultimas] = await Promise.all([
+  const [kpis, revenue, ordenesDia, ordenesDetalle] = await Promise.all([
     getTransaccionesKPIs(rango),
     getRevenueAcumuladoData(rango),
     getOrdenesPorDiaData(rango),
-    getUltimasOrdenes(),
+    getUltimasOrdenes(rango, -1),
   ]);
 
   const kpisParaExcel = [
@@ -21,18 +21,26 @@ export async function exportTransacciones(wb: XLSX.WorkBook, rango: string) {
     { Metrica: "Órdenes Canceladas", Valor: kpis.ordenesCanceladas },
   ];
 
+  const ordenesFormateadas = ordenesDetalle.map((orden: any) => ({
+    "ID Órden": orden.id,
+    Cliente: orden.cliente,
+    Fecha: orden.fecha,
+    "Monto ($)": orden.monto,
+    Estado: orden.estado,
+  }));
+
   const wsKpis = XLSX.utils.json_to_sheet(kpisParaExcel);
   const wsRevenue = XLSX.utils.json_to_sheet(revenue);
   const wsOrder = XLSX.utils.json_to_sheet(ordenesDia);
-  const wsLastOrders = XLSX.utils.json_to_sheet(ultimas);
+  const wsDetalle = XLSX.utils.json_to_sheet(ordenesFormateadas);
 
   wsKpis["!cols"] = autoFitColumns(kpisParaExcel);
   wsRevenue["!cols"] = autoFitColumns(revenue);
   wsOrder["!cols"] = autoFitColumns(ordenesDia);
-  wsLastOrders["!cols"] = autoFitColumns(ultimas);
+  wsDetalle["!cols"] = autoFitColumns(ordenesFormateadas);
 
   XLSX.utils.book_append_sheet(wb, wsKpis, "Resumen KPI");
-  XLSX.utils.book_append_sheet(wb, wsRevenue, "Serie Temporal");
-  XLSX.utils.book_append_sheet(wb, wsOrder, "Órdenes por Día");
-  XLSX.utils.book_append_sheet(wb, wsLastOrders, "Últimas Órdenes");
+  XLSX.utils.book_append_sheet(wb, wsRevenue, "Revenue Acumulado");
+  XLSX.utils.book_append_sheet(wb, wsOrder, "Volumen de Ordenes");
+  XLSX.utils.book_append_sheet(wb, wsDetalle, "Detalle de Órdenes");
 }

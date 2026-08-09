@@ -50,6 +50,6 @@ export async function exportGeneral(wb: XLSX.WorkBook, rango: string) {
   wsStatus["!cols"] = autoFitColumns(statusData);
 
   XLSX.utils.book_append_sheet(wb, wsKpis, "Resumen KPI");
-  XLSX.utils.book_append_sheet(wb, wsRevenue, "Serie Temporal");
+  XLSX.utils.book_append_sheet(wb, wsRevenue, "Ingresos por Fecha");
   XLSX.utils.book_append_sheet(wb, wsStatus, "Órdenes por Estado");
 }
