@@ -12,11 +12,17 @@ const chartConfig = {
   envios: { label: "Envíos Procesados", color: "var(--primary)" },
 };
 
-export function CarrierBarChart({ data }: { data: any[] }) {
+export function CarrierBarChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-2">
       <CardHeader>
-        <CardTitle>Envíos por Operador</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">

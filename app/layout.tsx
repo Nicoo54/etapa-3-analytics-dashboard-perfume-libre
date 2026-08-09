@@ -1,8 +1,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Sidebar } from "@/components/Sidebar";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { DateRangeFilter } from "@/components/layout/DateRangeFilter";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -37,12 +38,7 @@ export default function RootLayout({
                 Panel de Control
               </h2>
               <div className="flex items-center space-x-4">
-                <select className="bg-background text-foreground border border-input rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
-                  <option>Últimos 30 días</option>
-                  <option>Últimos 7 días</option>
-                  <option>Este mes</option>
-                </select>
-
+                <DateRangeFilter />
                 <button className="bg-primary text-primary-foreground px-4 py-1.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
                   Exportar
                 </button>

@@ -9,16 +9,42 @@ import { RatingEvolutionChart } from "@/components/calificaciones/RatingEvolutio
 import { SellersAtRiskTable } from "@/components/calificaciones/SellersAtRiskTable";
 import { Flag, MessageSquare, Star, Trophy } from "lucide-react";
 import { MetricCard } from "@/components/MetricCard";
+import { getDateRangeLabel } from "@/lib/utils";
 
-export default async function CalificacionesPage() {
+export default async function CalificacionesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rango?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const rango = resolvedSearchParams?.rango || "30d";
+
   const [kpis, distribucionData, evolucionData, riesgoData] = await Promise.all(
     [
-      getCalificacionesKPIs(),
-      getDistribucionCalificaciones(),
-      getEvolucionPromedio(),
+      getCalificacionesKPIs(rango),
+      getDistribucionCalificaciones(rango),
+      getEvolucionPromedio(rango),
       getVendedoresEnRiesgo(),
     ],
   );
+
+  let distTitle = "Distribución de Calificaciones";
+  let evoTitle = "Evolución del Promedio";
+
+  const labelRango = getDateRangeLabel(rango);
+
+  const labelPromedio = `Promedio de calificaciones ${labelRango}`;
+  const labelTotalResenas = `Total de reseñas ${labelRango}`;
+
+  if (rango === "7d") {
+    distTitle = "Distribución (Últimos 7 días)";
+    evoTitle = "Evolución Semanal";
+  } else if (rango === "mes_actual") {
+    distTitle = "Distribución (Este mes)";
+    evoTitle = "Evolución del Mes";
+  } else if (rango === "all") {
+    evoTitle = "Evolución Histórica";
+  }
 
   return (
     <div className="space-y-6">
@@ -33,26 +59,26 @@ export default async function CalificacionesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MetricCard
-          title="Promedio Global"
-          value={kpis.promedioGlobal.toFixed(1)}
+          title={labelPromedio}
+          value={kpis.promedioResenas.toFixed(1)}
           suffix={<Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />}
           icon={<Trophy className="w-4 h-4" />}
         />
         <MetricCard
-          title="Total de Reseñas"
+          title={labelTotalResenas}
           value={kpis.totalResenas.toLocaleString("es-AR")}
           icon={<MessageSquare className="w-4 h-4" />}
         />
         <MetricCard
-          title="Reportes Pendientes (Moderación)"
+          title="Reportes Pendientes"
           value={kpis.reportesPendientes}
           icon={<Flag className="w-4 h-4" />}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
-        <RatingDistributionChart data={distribucionData} />
-        <RatingEvolutionChart data={evolucionData} />
+        <RatingDistributionChart data={distribucionData} title={distTitle} />
+        <RatingEvolutionChart data={evolucionData} title={evoTitle} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3">

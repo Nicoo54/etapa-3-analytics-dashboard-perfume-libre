@@ -9,14 +9,45 @@ import { RolesComparisonChart } from "@/components/usuarios/RolesComparisonChart
 import { TopBuyersTable } from "@/components/usuarios/TopBuyersTable";
 import { MetricCard } from "@/components/MetricCard";
 import { UserCheck, UserPlus, Users } from "lucide-react";
+import { getDateRangeLabel } from "@/lib/utils";
 
-export default async function UsuariosPage() {
+export default async function UsuariosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rango?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const rango = resolvedSearchParams?.rango || "30d";
+
   const [kpis, crecimientoData, rolesData, topCompradores] = await Promise.all([
-    getUsuariosKPIs(),
-    getCrecimientoUsuariosData(),
-    getCompradoresVsVendedoresData(),
+    getUsuariosKPIs(rango),
+    getCrecimientoUsuariosData(rango),
+    getCompradoresVsVendedoresData(rango),
     getTopCompradores(),
   ]);
+
+  let labelNuevosUsuarios = "Nuevos usuarios este mes";
+  let labelGraficoCrecimiento = "Crecimiento de usuarios historico";
+  let labelGraficoActividad = "Actividad por rol historico  ";
+  const labelRango = getDateRangeLabel(rango);
+
+  const labelCompradoresRecurrentes = `Compradores recurrentes ${labelRango}`;
+
+  if (rango === "7d") {
+    labelNuevosUsuarios = "Nuevos usuarios esta semana";
+    labelGraficoCrecimiento = "Crecimiento de usuarios de la ultima semana";
+    labelGraficoActividad = "Actividad por rol de la ultima semana";
+  }
+  if (rango === "30d") {
+    labelNuevosUsuarios = "Nuevos usuarios en los ultimos 30 días";
+    labelGraficoCrecimiento = "Crecimiento de usuarios en los ultimos 30 días";
+    labelGraficoActividad = "Actividad por rol de los ultimos 30 días";
+  }
+  if (rango === "mes_actual") {
+    labelNuevosUsuarios = "Nuevos usuarios este mes";
+    labelGraficoCrecimiento = "Crecimiento de usuarios este mes";
+    labelGraficoActividad = "Actividad por rol de este mes";
+  }
 
   return (
     <div className="space-y-6">
@@ -34,21 +65,24 @@ export default async function UsuariosPage() {
           icon={<Users className="w-4 h-4" />}
         />
         <MetricCard
-          title="Nuevos este mes"
-          value={kpis.nuevosEsteMes}
+          title={labelNuevosUsuarios}
+          value={kpis.nuevosUsuarios}
           prefix="+"
           icon={<UserPlus className="w-4 h-4" />}
         />
         <MetricCard
-          title="Compradores Recurrentes"
+          title={labelCompradoresRecurrentes}
           value={kpis.compradoresRecurrentes.toLocaleString("es-AR")}
           icon={<UserCheck className="w-4 h-4" />}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
-        <UserGrowthChart data={crecimientoData} />
-        <RolesComparisonChart data={rolesData} />
+        <UserGrowthChart
+          data={crecimientoData}
+          title={labelGraficoCrecimiento}
+        />
+        <RolesComparisonChart data={rolesData} title={labelGraficoActividad} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3">

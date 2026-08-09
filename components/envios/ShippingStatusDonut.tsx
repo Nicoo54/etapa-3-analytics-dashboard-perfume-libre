@@ -17,7 +17,13 @@ const COLORS = [
   "var(--color-chart-delivered)",
 ];
 
-export function ShippingStatusDonut({ data }: { data: any[] }) {
+export function ShippingStatusDonut({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   const chartData = data.map((item, index) => ({
     ...item,
     fill: COLORS[index % COLORS.length],
@@ -37,7 +43,7 @@ export function ShippingStatusDonut({ data }: { data: any[] }) {
   return (
     <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Distribución de Estados</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={dynamicConfig} className="h-75 w-full">

@@ -23,11 +23,17 @@ const chartConfig = {
   },
 };
 
-export function RevenueLineChart({ data }: { data: any[] }) {
+export function RevenueLineChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-2">
       <CardHeader>
-        <CardTitle>Revenue Acumulado en el Tiempo</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">

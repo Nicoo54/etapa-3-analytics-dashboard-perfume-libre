@@ -9,14 +9,38 @@ import { CarrierBarChart } from "@/components/envios/CarrierBarChart";
 import { ShippingVolumeChart } from "@/components/envios/ShippingVolumeChart";
 import { MetricCard } from "@/components/MetricCard";
 import { Clock, PackageCheck, Truck } from "lucide-react";
+import { getDateRangeLabel } from "@/lib/utils";
 
-export default async function EnviosPage() {
+export default async function EnviosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rango?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const rango = resolvedSearchParams?.rango || "30d";
+
   const [kpis, estadosData, operadorData, volumenData] = await Promise.all([
-    getEnviosKPIs(),
-    getDistribucionEstados(),
-    getEnviosPorOperador(),
-    getVolumenEnviosDia(),
+    getEnviosKPIs(rango),
+    getDistribucionEstados(rango),
+    getEnviosPorOperador(rango),
+    getVolumenEnviosDia(rango),
   ]);
+
+  let volTitle = "Volumen de Envíos";
+
+  const dateRangeLabel = getDateRangeLabel(rango);
+
+  const entregadosLabel = "Entregados " + dateRangeLabel;
+  const distTitle = "Estados " + dateRangeLabel;
+  const opTitle = "Operadores " + dateRangeLabel;
+
+  if (rango === "7d") {
+    volTitle = "Volumen Semanal";
+  } else if (rango === "mes_actual") {
+    volTitle = "Volumen Mensual";
+  } else if (rango === "all") {
+    volTitle = "Volumen Histórico";
+  }
 
   return (
     <div className="space-y-6">
@@ -36,8 +60,8 @@ export default async function EnviosPage() {
           icon={<Truck className="w-4 h-4" />}
         />
         <MetricCard
-          title="Entregados Hoy"
-          value={kpis.entregadosHoy}
+          title={entregadosLabel}
+          value={kpis.entregados}
           icon={<PackageCheck className="w-4 h-4" />}
         />
         <MetricCard
@@ -53,12 +77,12 @@ export default async function EnviosPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
-        <ShippingStatusDonut data={estadosData} />
-        <CarrierBarChart data={operadorData} />
+        <ShippingStatusDonut data={estadosData} title={distTitle} />
+        <CarrierBarChart data={operadorData} title={opTitle} />
       </div>
 
       <div className="mt-8">
-        <ShippingVolumeChart data={volumenData} />
+        <ShippingVolumeChart data={volumenData} title={volTitle} />
       </div>
     </div>
   );
