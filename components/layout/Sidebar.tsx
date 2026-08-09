@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   LayoutDashboard,
   ArrowRightLeft,
@@ -30,8 +30,18 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [expanded, setExpanded] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  const currentRange = searchParams.get("rango");
+
+  const createHrefWithRange = (baseHref: string) => {
+    if (currentRange) {
+      return `${baseHref}?rango=${currentRange}`;
+    }
+    return baseHref;
+  };
 
   return (
     <>
@@ -82,7 +92,7 @@ export function Sidebar() {
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={createHrefWithRange(item.href)}
                 onClick={(e) => e.stopPropagation()}
                 className={`flex items-center rounded-lg whitespace-nowrap transition-colors ${
                   isActive

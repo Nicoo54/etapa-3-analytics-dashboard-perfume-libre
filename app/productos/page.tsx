@@ -10,11 +10,18 @@ import { CatalogTable } from "@/components/productos/CatalogTable";
 import { MetricCard } from "@/components/MetricCard";
 import { Database, Eye, PauseCircle } from "lucide-react";
 
-export default async function ProductosPage() {
+export default async function ProductosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rango?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const rango = resolvedSearchParams?.rango || "30d";
+
   const [kpis, topData, categoriaData, catalogoData] = await Promise.all([
     getProductosKPIs(),
-    getTopProductos(),
-    getDistribucionCategorias(),
+    getTopProductos(rango),
+    getDistribucionCategorias(rango),
     getUltimosProductos(),
   ]);
 
