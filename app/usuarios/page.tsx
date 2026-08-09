@@ -8,7 +8,7 @@ import { UserGrowthChart } from "@/components/usuarios/UserGrowthChart";
 import { RolesComparisonChart } from "@/components/usuarios/RolesComparisonChart";
 import { TopBuyersTable } from "@/components/usuarios/TopBuyersTable";
 import { MetricCard } from "@/components/MetricCard";
-import { UserCheck, UserPlus, Users } from "lucide-react";
+import { DollarSign, UserCheck, UserPlus, Users } from "lucide-react";
 import { getDateRangeLabel } from "@/lib/utils";
 
 export default async function UsuariosPage({
@@ -26,7 +26,9 @@ export default async function UsuariosPage({
     getTopCompradores(),
   ]);
 
-  let labelNuevosUsuarios = "Nuevos usuarios este mes";
+  const esHistorico = rango === "all";
+
+  let labelNuevosUsuarios = "";
   let labelGraficoCrecimiento = "Crecimiento de usuarios historico";
   let labelGraficoActividad = "Actividad por rol historico  ";
   const labelRango = getDateRangeLabel(rango);
@@ -64,12 +66,20 @@ export default async function UsuariosPage({
           value={kpis.totalUsuarios.toLocaleString("es-AR")}
           icon={<Users className="w-4 h-4" />}
         />
-        <MetricCard
-          title={labelNuevosUsuarios}
-          value={kpis.nuevosUsuarios}
-          prefix="+"
-          icon={<UserPlus className="w-4 h-4" />}
-        />
+        {esHistorico ? (
+          <MetricCard
+            title="Valor de Vida del Cliente (LTV)"
+            value={`$${(kpis.ltv || 0).toLocaleString("es-AR")}`}
+            icon={<DollarSign className="w-4 h-4" />}
+          />
+        ) : (
+          <MetricCard
+            title={labelNuevosUsuarios}
+            value={kpis.nuevosUsuarios ?? 0}
+            prefix="+"
+            icon={<UserPlus className="w-4 h-4" />}
+          />
+        )}
         <MetricCard
           title={labelCompradoresRecurrentes}
           value={kpis.compradoresRecurrentes.toLocaleString("es-AR")}
