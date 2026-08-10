@@ -1,9 +1,11 @@
 "use client";
 
-import { Pie, PieChart, ResponsiveContainer, Cell } from "recharts";
+import { Pie, PieChart, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -16,28 +18,46 @@ const chartConfig = {
 
 interface OrderStatusChartProps {
   data: { estado: string; cantidad: number; fill: string }[];
+  title: string;
 }
 
-export function OrderStatusChart({ data }: OrderStatusChartProps) {
+export function OrderStatusChart({ data, title }: OrderStatusChartProps) {
   return (
     <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Estado de Órdenes</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-75 w-full">
+        <ChartContainer config={chartConfig} className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    hideLabel
+                    nameKey="estado"
+                    indicator="dot"
+                    className="w-40"
+                  />
+                }
+              />
               <Pie
                 data={data}
                 dataKey="cantidad"
                 nameKey="estado"
-                cx="50%"
+                cx="55%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
+                innerRadius={55}
+                outerRadius={75}
                 paddingAngle={5}
+              />
+              <ChartLegend
+                layout="vertical"
+                align="left"
+                verticalAlign="middle"
+                content={<ChartLegendContent nameKey="estado" />}
+                className="flex-col items-start gap-2 text-sm pr-2"
               />
             </PieChart>
           </ResponsiveContainer>

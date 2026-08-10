@@ -14,16 +14,23 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { formatNumber } from "@/lib/utils";
 
 const chartConfig = {
   usuarios: { label: "Usuarios Totales", color: "var(--primary)" },
 };
 
-export function UserGrowthChart({ data }: { data: any[] }) {
+export function UserGrowthChart({
+  data,
+  title,
+}: {
+  data: any[];
+  title: string;
+}) {
   return (
     <Card className="col-span-1 lg:col-span-2">
       <CardHeader>
-        <CardTitle>Crecimiento de Usuarios</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-75 w-full">
@@ -52,7 +59,7 @@ export function UserGrowthChart({ data }: { data: any[] }) {
                 stroke="#e5e7eb"
               />
               <XAxis
-                dataKey="mes"
+                dataKey="fecha"
                 stroke="#888888"
                 fontSize={12}
                 tickLine={false}
@@ -64,7 +71,35 @@ export function UserGrowthChart({ data }: { data: any[] }) {
                 tickLine={false}
                 axisLine={false}
               />
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip
+                cursor={{ style: { fill: "var(--primary)", opacity: 0.1 } }}
+                content={
+                  <ChartTooltipContent
+                    labelClassName="font-medium text-foreground"
+                    className="text-muted-foreground"
+                    formatter={(value, name) => (
+                      <>
+                        <div
+                          className="h-2.5 w-2.5 shrink-0 rounded-xs bg-(--color-bg)"
+                          style={
+                            {
+                              "--color-bg": `var(--color-${name})`,
+                            } as React.CSSProperties
+                          }
+                        />
+                        {chartConfig[name as keyof typeof chartConfig]?.label ||
+                          name}
+                        <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
+                          {formatNumber(Number(value))}
+                        </div>
+                      </>
+                    )}
+                  />
+                }
+                labelFormatter={(label) => (
+                  <span className="font-medium text-foreground">{label}</span>
+                )}
+              />
               <Area
                 type="monotone"
                 dataKey="usuarios"

@@ -1,43 +1,97 @@
-export async function getUsuariosKPIs() {
+export async function getUsuariosKPIs(rango: string = "30d") {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
-    return {
-      totalUsuarios: 1250,
-      nuevosEsteMes: 85,
-      compradoresRecurrentes: 340,
-    };
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const totalUsuarios: number = 1500;
+    switch (rango) {
+      case "7d":
+        return {
+          totalUsuarios: totalUsuarios,
+          nuevosUsuarios: 25,
+          compradoresRecurrentes: 120,
+        };
+      case "mes_actual":
+        return {
+          totalUsuarios: totalUsuarios,
+          nuevosUsuarios: 85,
+          compradoresRecurrentes: 274,
+        };
+      case "all":
+        return {
+          totalUsuarios: totalUsuarios,
+          ltv: 12500,
+          compradoresRecurrentes: 520,
+        };
+      case "30d":
+      default:
+        return {
+          totalUsuarios: totalUsuarios,
+          nuevosUsuarios: 92,
+          compradoresRecurrentes: 340,
+        };
+    }
   }
 
   try {
     const res = await fetch(
-      "https://buyer-app.vercel.app/api/admin/metricas/usuarios/kpis",
+      `https://buyer-app.vercel.app/api/admin/metricas/usuarios/kpis?rango=${rango}`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();
   } catch (error) {
     console.error("Error obteniendo KPIs de usuarios:", error);
-    return { totalUsuarios: 0, nuevosEsteMes: 0, compradoresRecurrentes: 0 };
+    return { totalUsuarios: 0, nuevosUsuarios: 0, compradoresRecurrentes: 0 };
   }
 }
 
-export async function getCrecimientoUsuariosData() {
+export async function getCrecimientoUsuariosData(rango: string = "30d") {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
-    return [
-      { mes: "Ene", usuarios: 500 },
-      { mes: "Feb", usuarios: 700 },
-      { mes: "Mar", usuarios: 850 },
-      { mes: "Abr", usuarios: 1050 },
-      { mes: "May", usuarios: 1150 },
-      { mes: "Jun", usuarios: 1250 },
-    ];
+    switch (rango) {
+      case "7d":
+        return [
+          { fecha: "Lun", usuarios: 1220 },
+          { fecha: "Mar", usuarios: 1225 },
+          { fecha: "Mié", usuarios: 1230 },
+          { fecha: "Jue", usuarios: 1238 },
+          { fecha: "Vie", usuarios: 1242 },
+          { fecha: "Sáb", usuarios: 1248 },
+          { fecha: "Dom", usuarios: 1250 },
+        ];
+      case "mes_actual":
+        return [
+          { fecha: "Semana 1", usuarios: 1180 },
+          { fecha: "Semana 2", usuarios: 1205 },
+          { fecha: "Semana 3", usuarios: 1230 },
+          { fecha: "Semana 4", usuarios: 1250 },
+        ];
+      case "all":
+        return [
+          { fecha: "Ene", usuarios: 500 },
+          { fecha: "Feb", usuarios: 700 },
+          { fecha: "Mar", usuarios: 850 },
+          { fecha: "Abr", usuarios: 1050 },
+          { fecha: "May", usuarios: 1150 },
+          { fecha: "Jun", usuarios: 1250 },
+        ];
+      case "30d":
+      default:
+        return [
+          { fecha: "01/06", usuarios: 1000 },
+          { fecha: "05/06", usuarios: 1100 },
+          { fecha: "10/06", usuarios: 1200 },
+          { fecha: "15/06", usuarios: 1300 },
+          { fecha: "20/06", usuarios: 1400 },
+          { fecha: "25/06", usuarios: 1500 },
+        ];
+    }
   }
 
   try {
     const res = await fetch(
-      "https://buyer-app.vercel.app/api/admin/metricas/usuarios/crecimiento",
+      `https://buyer-app.vercel.app/api/admin/metricas/usuarios/crecimiento?rango=${rango}`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();
@@ -46,23 +100,53 @@ export async function getCrecimientoUsuariosData() {
   }
 }
 
-export async function getCompradoresVsVendedoresData() {
+export async function getCompradoresVsVendedoresData(rango: string = "30d") {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
-    return [
-      { mes: "Ene", compradores: 300, vendedores: 40 },
-      { mes: "Feb", compradores: 450, vendedores: 55 },
-      { mes: "Mar", compradores: 580, vendedores: 70 },
-      { mes: "Abr", compradores: 750, vendedores: 85 },
-      { mes: "May", compradores: 820, vendedores: 90 },
-      { mes: "Jun", compradores: 910, vendedores: 110 },
-    ];
+    switch (rango) {
+      case "7d":
+        return [
+          { fecha: "Lun", compradores: 900, vendedores: 110 },
+          { fecha: "Mar", compradores: 902, vendedores: 110 },
+          { fecha: "Mié", compradores: 905, vendedores: 110 },
+          { fecha: "Jue", compradores: 908, vendedores: 110 },
+          { fecha: "Vie", compradores: 910, vendedores: 110 },
+          { fecha: "Sáb", compradores: 910, vendedores: 110 },
+          { fecha: "Dom", compradores: 910, vendedores: 110 },
+        ];
+      case "mes_actual":
+        return [
+          { fecha: "Sem 1", compradores: 840, vendedores: 95 },
+          { fecha: "Sem 2", compradores: 865, vendedores: 100 },
+          { fecha: "Sem 3", compradores: 890, vendedores: 105 },
+          { fecha: "Sem 4", compradores: 910, vendedores: 110 },
+        ];
+      case "all":
+        return [
+          { fecha: "Ene", compradores: 300, vendedores: 40 },
+          { fecha: "Feb", compradores: 450, vendedores: 55 },
+          { fecha: "Mar", compradores: 580, vendedores: 70 },
+          { fecha: "Abr", compradores: 750, vendedores: 85 },
+          { fecha: "May", compradores: 820, vendedores: 90 },
+          { fecha: "Jun", compradores: 910, vendedores: 110 },
+        ];
+      case "30d":
+      default:
+        return [
+          { fecha: "01/06", compradores: 800, vendedores: 100 },
+          { fecha: "05/06", compradores: 850, vendedores: 105 },
+          { fecha: "10/06", compradores: 900, vendedores: 110 },
+          { fecha: "15/06", compradores: 950, vendedores: 115 },
+          { fecha: "20/06", compradores: 1000, vendedores: 120 },
+          { fecha: "25/06", compradores: 1050, vendedores: 125 },
+        ];
+    }
   }
 
   try {
     const res = await fetch(
-      "https://buyer-app.vercel.app/api/admin/metricas/usuarios/roles",
+      `https://buyer-app.vercel.app/api/admin/metricas/usuarios/roles?rango=${rango}`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();
@@ -75,7 +159,7 @@ export async function getTopCompradores() {
   const useRealApi = process.env.USE_REAL_API === "true";
 
   if (!useRealApi) {
-    return [
+    const baseMock = [
       {
         id: "USR-01",
         nombre: "Martín López",
@@ -112,11 +196,13 @@ export async function getTopCompradores() {
         gastado: 88000,
       },
     ];
+
+    return baseMock;
   }
 
   try {
     const res = await fetch(
-      "https://buyer-app.vercel.app/api/admin/metricas/usuarios/top-compradores?limit=10",
+      `https://buyer-app.vercel.app/api/admin/metricas/usuarios/top-compradores?limit=10`,
     );
     if (!res.ok) throw new Error("API error");
     return await res.json();

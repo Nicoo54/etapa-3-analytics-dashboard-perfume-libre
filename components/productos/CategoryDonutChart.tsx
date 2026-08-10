@@ -4,6 +4,8 @@ import { Pie, PieChart, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -46,6 +48,13 @@ export function CategoryDonutChart({ data }: { data: any[] }) {
                 innerRadius={60}
                 outerRadius={80}
                 paddingAngle={5}
+              />
+              <ChartLegend
+                layout="vertical"
+                align="left"
+                verticalAlign="middle"
+                content={<ChartLegendContent nameKey="categoria" />}
+                className="flex-col items-start gap-2 text-sm pr-2"
               />
             </PieChart>
           </ResponsiveContainer>
