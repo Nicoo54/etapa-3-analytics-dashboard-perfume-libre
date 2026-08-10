@@ -38,7 +38,8 @@ export async function exportAll(wb: XLSX.WorkBook, rango: string) {
     getRevenueAcumuladoData(rango),
     getUltimasOrdenes(rango, -1),
     getUsuariosKPIs(rango),
-    getTopCompradores(), // Si tu endpoint de top soporta -1, lo usamos acá también
+    // TODO: En un futuro se podria obtener todos los compradores
+    getTopCompradores(),
 
     getProductosKPIs(),
     getTopProductos(rango),
@@ -54,43 +55,41 @@ export async function exportAll(wb: XLSX.WorkBook, rango: string) {
       Categoría: "FINANZAS",
       Métrica: "Ingresos Totales",
       Valor: metricsOverview.revenueTotal.valor,
-      Tendencia: metricsOverview.revenueTotal.tendencia ?? "N/A",
     },
     {
       Categoría: "FINANZAS",
       Métrica: "Ticket Promedio",
       Valor: transaccionesKpis.ticketPromedio,
-      Tendencia: "N/A",
     },
     {
       Categoría: "USUARIOS",
       Métrica: "Usuarios Activos",
       Valor: metricsOverview.usuariosActivos.valor,
-      Tendencia: metricsOverview.usuariosActivos.tendencia ?? "N/A",
     },
     {
       Categoría: "USUARIOS",
       Métrica: "Compradores Recurrentes",
       Valor: usuariosKpis.compradoresRecurrentes,
-      Tendencia: usuariosKpis.compradoresRecurrentes.tendencia ?? "N/A",
+    },
+    {
+      Categoría: "USUARIOS",
+      Métrica: "Valor de Vida del Cliente (LTV)",
+      Valor: usuariosKpis.ltv,
     },
     {
       Categoría: "CATÁLOGO",
       Métrica: "Publicaciones Activas",
       Valor: productosKpis.activos,
-      Tendencia: "N/A",
     },
     {
       Categoría: "CALIDAD",
       Métrica: "Calificación Promedio",
       Valor: metricsOverview.calificacionPromedio,
-      Tendencia: "N/A",
     },
     {
       Categoría: "ENVÍOS",
       Métrica: "Entregados en Período",
       Valor: enviosKpis.entregados,
-      Tendencia: "N/A",
     },
   ];
   const wsResumen = XLSX.utils.json_to_sheet(resumenEjecutivo);
