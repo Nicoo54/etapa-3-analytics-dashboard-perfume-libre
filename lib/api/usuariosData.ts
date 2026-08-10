@@ -20,7 +20,7 @@ export async function getUsuariosKPIs(rango: string = "30d") {
       case "all":
         return {
           totalUsuarios: totalUsuarios,
-          nuevosUsuarios: 120,
+          ltv: 12500,
           compradoresRecurrentes: 520,
         };
       case "30d":
