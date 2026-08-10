@@ -14,8 +14,9 @@ export default clerkMiddleware(async (auth, req) => {
 
   const rol = (sessionClaims?.metadata as any)?.role || "invitado";
 
-  if (rol !== "admin") {
-    return NextResponse.rewrite(new URL("/404", req.url));
+  if (rol !== "admin" && !req.url.includes("/unauthorized")) {
+    const unauthorizedUrl = new URL("/unauthorized", req.url);
+    return NextResponse.redirect(unauthorizedUrl);
   }
 });
 
