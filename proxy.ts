@@ -1,4 +1,9 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createClerkClient } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+
+const clerkClient = createClerkClient({
+  secretKey: process.env.CLERK_SECRET_KEY,
+});
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims } = await auth();
@@ -7,12 +12,10 @@ export default clerkMiddleware(async (auth, req) => {
     return (await auth()).redirectToSignIn();
   }
 
-  const role =
-    (sessionClaims?.metadata as { role?: string })?.role ||
-    (sessionClaims?.publicMetadata as { role?: string })?.role;
+  const rol = (sessionClaims?.metadata as any)?.role || "invitado";
 
-  if (role !== "admin") {
-    return (await auth()).redirectToSignIn();
+  if (rol !== "admin") {
+    return NextResponse.rewrite(new URL("/404", req.url));
   }
 });
 

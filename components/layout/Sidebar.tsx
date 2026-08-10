@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { useUser } from "@clerk/nextjs";
+import ClerkButton from "./ClerkButton";
 
 const navItems = [
   { href: "/general", label: "General", icon: LayoutDashboard },
@@ -154,50 +156,7 @@ export function Sidebar() {
             </span>
           </button>
 
-          <Link
-            href="/perfil"
-            onClick={(e) => e.stopPropagation()}
-            className={`flex items-center rounded-lg whitespace-nowrap text-muted-foreground transition-colors ${
-              expanded ? "hover:bg-muted hover:text-foreground" : ""
-            }`}
-          >
-            <div
-              className={`w-10 h-10 flex items-center justify-center rounded-lg shrink-0 transition-colors ${
-                !expanded ? "hover:bg-muted" : ""
-              }`}
-            >
-              <UserCircle className="h-5 w-5" />
-            </div>
-            <span
-              className={`text-sm font-medium whitespace-nowrap transition-opacity duration-300 ${
-                expanded ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              Mi Perfil
-            </span>
-          </Link>
-
-          <button
-            onClick={(e) => e.stopPropagation()}
-            className={`w-full flex items-center rounded-lg whitespace-nowrap text-red-500 transition-colors ${
-              expanded ? "hover:bg-red-500/10 hover:text-red-600" : ""
-            }`}
-          >
-            <div
-              className={`w-10 h-10 flex items-center justify-center rounded-lg shrink-0 transition-colors ${
-                !expanded ? "hover:bg-red-500/10" : ""
-              }`}
-            >
-              <LogOut className="h-5 w-5" />
-            </div>
-            <span
-              className={`text-sm font-medium whitespace-nowrap transition-opacity duration-300 ${
-                expanded ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              Cerrar Sesión
-            </span>
-          </button>
+          <ClerkButton expanded={expanded} />
         </div>
       </aside>
     </>
