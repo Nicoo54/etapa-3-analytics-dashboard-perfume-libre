@@ -15,15 +15,22 @@ export async function exportUsuarios(wb: XLSX.WorkBook, rango: string) {
     getTopCompradores(),
   ]);
 
+  const esHistorico = rango === "all";
+
   const kpiFlat = [
     {
       Metrica: "Total Registrados",
       Valor: kpis.totalUsuarios,
     },
-    {
-      Metrica: "Nuevos usuarios",
-      Valor: kpis.nuevosUsuarios,
-    },
+    esHistorico
+      ? {
+          Metrica: "Valor de Vida del Cliente (LTV)",
+          Valor: kpis.ltv,
+        }
+      : {
+          Metrica: "Nuevos usuarios",
+          Valor: kpis.nuevosUsuarios,
+        },
     {
       Metrica: "Compradores Recurrentes",
       Valor: kpis.compradoresRecurrentes,
