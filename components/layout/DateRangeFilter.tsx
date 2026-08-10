@@ -1,8 +1,9 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-export function DateRangeFilter() {
+function DateRangeFilterInner() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -28,5 +29,15 @@ export function DateRangeFilter() {
       <option value="mes_actual">Este mes</option>
       <option value="all">Global (Histórico)</option>
     </select>
+  );
+}
+
+export function DateRangeFilter() {
+  return (
+    <Suspense
+      fallback={<div className="h-9 w-36 bg-muted animate-pulse rounded-md" />}
+    >
+      <DateRangeFilterInner />
+    </Suspense>
   );
 }

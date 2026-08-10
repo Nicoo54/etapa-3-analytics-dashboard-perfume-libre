@@ -9,16 +9,13 @@ import {
   Package,
   Star,
   Truck,
-  LogOut,
   Sun,
   Moon,
-  UserCircle,
   Activity,
   ChevronsLeft,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useTheme } from "next-themes";
-import { useUser } from "@clerk/nextjs";
 import ClerkButton from "./ClerkButton";
 
 const navItems = [
@@ -30,7 +27,8 @@ const navItems = [
   { href: "/envios", label: "Envíos", icon: Truck },
 ];
 
-export function Sidebar() {
+// Renombramos tu componente original a SidebarInner
+function SidebarInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [expanded, setExpanded] = useState(false);
@@ -160,5 +158,18 @@ export function Sidebar() {
         </div>
       </aside>
     </>
+  );
+}
+
+// Exportamos Sidebar envuelto en Suspense
+export function Sidebar() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-18 shrink-0 h-screen bg-sidebar border-r border-border" />
+      }
+    >
+      <SidebarInner />
+    </Suspense>
   );
 }
