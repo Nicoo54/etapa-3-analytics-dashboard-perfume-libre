@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Download, FileSpreadsheet, Loader2 } from "lucide-react";
 import { exportAllPages, exportCurrentPage } from "@/lib/utils/index";
 
-export function ExportButton() {
+function ExportButtonInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
@@ -78,6 +78,16 @@ export function ExportButton() {
         </>
       )}
     </div>
+  );
+}
+
+export function ExportButton() {
+  return (
+    <Suspense
+      fallback={<div className="h-9 w-24 bg-muted animate-pulse rounded-md" />}
+    >
+      <ExportButtonInner />
+    </Suspense>
   );
 }
 
