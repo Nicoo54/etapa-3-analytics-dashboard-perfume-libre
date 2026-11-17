@@ -27,7 +27,6 @@ const navItems = [
   { href: "/envios", label: "Envíos", icon: Truck },
 ];
 
-// Renombramos tu componente original a SidebarInner
 function SidebarInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -161,7 +160,6 @@ function SidebarInner() {
   );
 }
 
-// Exportamos Sidebar envuelto en Suspense
 export function Sidebar() {
   return (
     <Suspense

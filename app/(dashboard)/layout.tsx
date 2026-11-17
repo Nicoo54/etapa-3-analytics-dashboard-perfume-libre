@@ -1,5 +1,4 @@
 import { Sidebar } from "@/components/layout/Sidebar";
-import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { DateRangeFilter } from "@/components/layout/DateRangeFilter";
 import { ExportButton } from "@/components/layout/ExportButton";
 
