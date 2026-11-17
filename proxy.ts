@@ -12,9 +12,9 @@ export default clerkMiddleware(async (auth, req) => {
     return (await auth()).redirectToSignIn();
   }
 
-  const rol = (sessionClaims?.metadata as any)?.role || "invitado";
+  const rol = (sessionClaims?.metadata as any)?.rol || "invitado";
 
-  if (rol !== "admin" && !req.url.includes("/unauthorized")) {
+  if (rol !== "ADMIN" && !req.url.includes("/unauthorized")) {
     const unauthorizedUrl = new URL("/unauthorized", req.url);
     return NextResponse.redirect(unauthorizedUrl);
   }
